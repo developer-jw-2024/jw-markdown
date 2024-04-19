@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+      "module": "commonjs",
+      "target": "es2016",
+      //"moduleResolution": "nodenext",
+      "experimentalDecorators": true,
+      "esModuleInterop" : true,
+      "sourceMap": true,
+      "outDir": "dist",  
+    }
+}

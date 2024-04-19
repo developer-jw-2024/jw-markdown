@@ -1,0 +1,31 @@
+{
+  "name": "jw-markdown",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup && npm run copy-files",
+    "copy-files": "cp src/*.txt dist",
+    "test": "jest --coverage --watch"
+  },
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/developer-jw-2024/jw-markdown"
+  },
+  "author": "developer.jacky.wong <developer.jacky.wong@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "ts-parser-generator": "^0.0.12"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.12.7",
+    "tsup": "^8.0.2"
+  }
+}

@@ -21,7 +21,7 @@
   "author": "developer.jacky.wong <developer.jacky.wong@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "ts-parser-generator": "^0.0.13"
+    "ts-parser-generator": "^0.0.14"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",

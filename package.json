@@ -1,6 +1,6 @@
 {
   "name": "jw-markdown",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup && npm run copy-files",
+    "build": "rm -rf dist && tsup && npm run copy-files",
     "copy-files": "cp src/*.txt dist",
     "test": "jest --coverage --watch"
   },
@@ -22,7 +22,7 @@
   "license": "ISC",
   "dependencies": {
     "html-entities": "^2.5.2",
-    "ts-parser-generator": "^0.0.17"
+    "ts-parser-generator": "^0.0.18"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",

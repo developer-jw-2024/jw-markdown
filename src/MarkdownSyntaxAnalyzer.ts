@@ -1,15 +1,13 @@
 import { lr } from "ts-parser-generator";
 import { MarkdownLanguageFunctionsEntity } from './Language_Function'
 import { Blockquote, ComplementBlock, Markdown } from './MarkdownLib'
-
-var languageDefinitionPath: string = `${__dirname}/Language.txt`
-var tokenTypeDefinitionPath: string = `${__dirname}/RegExp.txt`
+import { definition } from './markdownDefinition'
 
 export class MarkdownSyntaxAnalyzer {
     lrSyntaxAnalyzerRunner: lr.LRSyntaxAnalyzerRunner
 
     init() {
-        this.lrSyntaxAnalyzerRunner = new lr.LRSyntaxAnalyzerRunner().init(languageDefinitionPath, tokenTypeDefinitionPath, MarkdownLanguageFunctionsEntity)
+        this.lrSyntaxAnalyzerRunner = new lr.LRSyntaxAnalyzerRunner().init(definition.languageDefinition, definition.tokenTypeDefinition, MarkdownLanguageFunctionsEntity)
         this.lrSyntaxAnalyzerRunner.setPreprocessing((v:string):string=>{
             if (v.at(-1)!='\n') return v+'\n'
             return v

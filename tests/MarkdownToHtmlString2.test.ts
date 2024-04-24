@@ -2066,5 +2066,97 @@ Second Term
 `<p><img src="/assets/images/san-juan-mountains.jpg" title="San Juan Mountains" alt="The San Juan Mountains Image"></p>`
         )
     })
+
+    test('markdown - inputing-38', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`| Syntax      | Description |
+| ----------- | ----------- |
+| Header      | Title       |
+| Paragraph   | Text        |`
+        )
+
+        
+        expect(html).toEqual(
+`<table>
+    <thead>
+        <tr>
+            <th>Syntax</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Header</td>
+            <td>Title</td>
+        </tr>
+        <tr>
+            <td>Paragraph</td>
+            <td>Text</td>
+        </tr>
+    </tbody>
+</table>`
+        )
+    })
+
+    test('markdown - inputing-39', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`| Syntax      | Left Left Left | Center Center Center | Right Right Right |
+| ----------- | :----------- | :-----------: | -----------: |
+| Header      | Title       | Title       | ![The San Juan Mountains Image](https://mdg.imgix.net/assets/images/san-juan-mountains.jpg?auto=format&fit=clip&q=40&w=1080 "San Juan Mountains")       |
+| Paragraph   | Text        | Text        | T**ex**t        |`
+        )
+
+        
+        expect(html).toEqual(
+`<table>
+    <thead>
+        <tr>
+            <th>Syntax</th>
+            <th class="TableCellAlignLeft">Left Left Left</th>
+            <th class="TableCellAlignCenter">Center Center Center</th>
+            <th class="TableCellAlignRight">Right Right Right</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Header</td>
+            <td class="TableCellAlignLeft">Title</td>
+            <td class="TableCellAlignCenter">Title</td>
+            <td class="TableCellAlignRight"><img src="https://mdg.imgix.net/assets/images/san-juan-mountains.jpg?auto=format&fit=clip&q=40&w=1080" title="San Juan Mountains" alt="The San Juan Mountains Image"></td>
+        </tr>
+        <tr>
+            <td>Paragraph</td>
+            <td class="TableCellAlignLeft">Text</td>
+            <td class="TableCellAlignCenter">Text</td>
+            <td class="TableCellAlignRight">T<strong>ex</strong>t</td>
+        </tr>
+    </tbody>
+</table>`
+        )
+    })
+
+
+    test('markdown - inputing-39', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`\`\`\`
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "age": 25
+}
+\`\`\``
+        )
+
+        
+        expect(html).toEqual(
+`\`\`\`
+{
+  &quot;firstName&quot;: &quot;John&quot;,
+  &quot;lastName&quot;: &quot;Smith&quot;,
+  &quot;age&quot;: 25
+}
+\`\`\``
+        )
+    })
 })
 

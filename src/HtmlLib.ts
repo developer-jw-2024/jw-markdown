@@ -147,6 +147,10 @@ export class Text extends HtmlStringElement {}
 export class FencedCodeBlockText extends HtmlStringElement {
     toHtmlString(intent : string = ''): string {
         return encode(this.value).split('\n').map(x=>intent+x).join('\n')
+        // var lines = encode(this.value).split('\n')
+        // var language = lines[0].trim().substring(3)
+        // var content = lines.slice(1, lines.length-1).join('\n')
+        // return `<pre><code class="${language}">\n${content}\n</code></pre>`
     }
 }
 export class HorizontalRule extends HtmlStringElement {

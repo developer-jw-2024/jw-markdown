@@ -562,11 +562,17 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
     }
     @syntax.GrammarProductionFunction(`Link -> openSquareBracket Sentence closeSquareBracket openParentheses url spaces doubleQuotationMarkText closeParentheses`)
     Link__openSquareBracket_Sentence_closeSquareBracket_openParentheses_url_spaces_doubleQuotationMarkText_closeParentheses(argv : Array<syntax.AnalysisToken>) {
-        return new Link(argv[1].value, argv[4].value, argv[6].value)
+        var title : string = argv[6].value
+        title = title.substring(1, title.length-1)
+        return new Link(argv[1].value, argv[4].value, title)
     }
-    @syntax.GrammarProductionFunction(`Image -> exclamationMarkOpenSquareBracket Sentence closeSquareBracket openParentheses url spaces doubleQuotationMarkText closeParentheses`)
-    Image__exclamationMarkOpenSquareBracket_Sentence_closeSquareBracket_openParentheses_url_spaces_doubleQuotationMarkText_closeParentheses(argv : Array<syntax.AnalysisToken>) {
-        return new Image(argv[1].value, argv[4].value, argv[6].value)
+    @syntax.GrammarProductionFunction(`Image -> exclamationMarkOpenSquareBracket PlainText closeSquareBracket openParentheses url spaces doubleQuotationMarkText closeParentheses`)
+    Image__exclamationMarkOpenSquareBracket_PlainText_closeSquareBracket_openParentheses_url_spaces_doubleQuotationMarkText_closeParentheses(argv : Array<syntax.AnalysisToken>) {
+        var alt : PlainText = argv[1].value
+        var url = argv[4].value
+        var title : string = argv[6].value
+        title = title.substring(1, title.length-1)
+        return new Image(alt.getRawValue(), url, title)
     }
 
 

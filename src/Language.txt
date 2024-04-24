@@ -117,7 +117,7 @@ FootnoteReference -> openSquareBracketWithCaret simpleText closeSquareBracket
 
 Link -> openSquareBracket Sentence closeSquareBracket openParentheses url closeParentheses
 Link -> openSquareBracket Sentence closeSquareBracket openParentheses url spaces doubleQuotationMarkText closeParentheses
-Image -> exclamationMarkOpenSquareBracket Sentence closeSquareBracket openParentheses url spaces doubleQuotationMarkText closeParentheses
+Image -> exclamationMarkOpenSquareBracket PlainText closeSquareBracket openParentheses url spaces doubleQuotationMarkText closeParentheses
 
 
 

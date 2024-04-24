@@ -298,9 +298,9 @@ This is that.`
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <p>This is a sentence</p>
-</div>`
+</blockquote>`
         )
     })
 
@@ -324,9 +324,9 @@ This is that.`
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <br/>
-</div>`
+</blockquote>`
         )
     })
 
@@ -338,9 +338,9 @@ This is that.`
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <p>H</p>
-</div>`
+</blockquote>`
         )
     })
 
@@ -354,9 +354,9 @@ This is that.`
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <p>This is a sentence<br/>This is the second sentence</p>
-</div>`
+</blockquote>`
         )
     })
 
@@ -369,11 +369,11 @@ This is that.`
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div class="blockquote">
-    <div class="blockquote">
+`<blockquote>
+    <blockquote>
         <p>This is a sentence</p>
-    </div>
-</div>`
+    </blockquote>
+</blockquote>`
         )
     })
 
@@ -397,11 +397,11 @@ This is that.`
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div class="blockquote">
-    <div class="blockquote">
+`<blockquote>
+    <blockquote>
         <br/>
-    </div>
-</div>`
+    </blockquote>
+</blockquote>`
         )
     })
 
@@ -415,11 +415,11 @@ This is that.`
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div class="blockquote">
-    <div class="blockquote">
+`<blockquote>
+    <blockquote>
         <p>This is a sentence<br/>This is the</p>
-    </div>
-</div>`
+    </blockquote>
+</blockquote>`
         )
     })
 
@@ -434,12 +434,12 @@ This is that.`
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <h1>ONK</h1>
-    <div class="blockquote">
+    <blockquote>
         <p>This is a sentence<br/>This is the</p>
-    </div>
-</div>`
+    </blockquote>
+</blockquote>`
         )
     })
 
@@ -453,13 +453,13 @@ This is that.`
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <h1>ONK</h1>
-    <div class="blockquote">
+    <blockquote>
         <p>This is a sentence</p>
-    </div>
+    </blockquote>
     <p>This is the</p>
-</div>`
+</blockquote>`
         )
     })
 
@@ -532,9 +532,9 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>Fruite
-        <div class="blockquote">
+        <blockquote>
             <p>Apple<br/>Banana</p>
-        </div>
+        </blockquote>
     </li>
     <li>Animals</li>
 </ol>` 
@@ -576,9 +576,9 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>Fruite
-        <div class="blockquote">
+        <blockquote>
             <p>Red</p>
-        </div>
+        </blockquote>
     </li>
 </ol>` 
         )
@@ -600,9 +600,9 @@ This is that.`
     <li>Fruite
         <ol>
             <li>Apple
-                <div class="blockquote">
+                <blockquote>
                     <p>Red is my</p>
-                </div>
+                </blockquote>
             </li>
             <li>Banana</li>
         </ol>
@@ -629,9 +629,9 @@ This is that.`
         <ol>
             <li>Apple</li>
         </ol>
-        <div class="blockquote">
+        <blockquote>
             <p>Red is my</p>
-        </div>
+        </blockquote>
         <ol>
             <li>Banana</li>
         </ol>
@@ -717,7 +717,7 @@ This is that.`
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<p>type \`nano\`.</p>` 
+`<p>type <code>nano</code>.</p>` 
         )
     })
 
@@ -728,7 +728,7 @@ This is that.`
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<p>\`\`Use \`code\` in your Markdown file.\`\`</p>` 
+`<p><code>Use <code>code</code> in your Markdown file.</code></p>` 
         )
     })
 
@@ -1009,7 +1009,7 @@ This is that.`
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div class="blockquote">
+`<blockquote>
     \`\`\`
     {
       &quot;firstName&quot;: &quot;John&quot;,
@@ -1017,7 +1017,7 @@ This is that.`
       &quot;age&quot;: 25
     }
     \`\`\`
-</div>`
+</blockquote>`
         )      
     })
 
@@ -1038,7 +1038,7 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>coding
-        <div class="blockquote">
+        <blockquote>
             \`\`\`
             {
               &quot;firstName&quot;: &quot;John&quot;,
@@ -1046,7 +1046,7 @@ This is that.`
               &quot;age&quot;: 25
             }
             \`\`\`
-        </div>
+        </blockquote>
     </li>
 </ol>`)
     })
@@ -1289,9 +1289,9 @@ Second Term
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <p>First Term</p>
-</div>
+</blockquote>
 <dl>
     <dt></dt>
     <dd>This is the definition of the first term.</dd>
@@ -1308,12 +1308,12 @@ Second Term
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <dl>
         <dt>First Term</dt>
         <dd>This is the definition of the first term.</dd>
     </dl>
-</div>`
+</blockquote>`
         )
     })
 
@@ -1335,7 +1335,7 @@ Second Term
 `<ol>
     <li>coding</li>
 </ol>
-<div class="blockquote">
+<blockquote>
     \`\`\`
     {
       &quot;firstName&quot;: &quot;John&quot;,
@@ -1343,7 +1343,7 @@ Second Term
       &quot;age&quot;: 25
     }
     \`\`\`
-</div>`
+</blockquote>`
         )
     })
 
@@ -1450,7 +1450,7 @@ Second Term
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
 `<div><span id="fn:Variable">Variable</span>This is good foot note.
-    <p>Indent paragraphs to include them in the footnote.<br/>\`{ my code }\`</p>
+    <p>Indent paragraphs to include them in the footnote.<br/><code>{ my code }</code></p>
     <br/>
     <p>Add as many paragraphs as you like.</p>
 </div>`
@@ -1470,13 +1470,13 @@ Second Term
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
 `<div><span id="fn:Variable">Variable</span>This is good foot note.
-    <div class="blockquote">
-        <p>Indent paragraphs to include them in the footnote.<br/>\`{ my code }\`</p>
-    </div>
+    <blockquote>
+        <p>Indent paragraphs to include them in the footnote.<br/><code>{ my code }</code></p>
+    </blockquote>
     <br/>
-    <div class="blockquote">
+    <blockquote>
         <p>Add as many paragraphs as you like.</p>
-    </div>
+    </blockquote>
 </div>`
         )
     })
@@ -1494,11 +1494,11 @@ Second Term
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
 `<div><span id="fn:Variable">Variable</span>This is good foot note.
-    <div class="blockquote">
-        <p>Indent paragraphs to include them in the footnote.<br/>\`{ my code }\`</p>
+    <blockquote>
+        <p>Indent paragraphs to include them in the footnote.<br/><code>{ my code }</code></p>
         <br/>
         <p>Add as many paragraphs as you like.</p>
-    </div>
+    </blockquote>
 </div>`
         )
     })

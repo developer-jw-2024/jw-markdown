@@ -130,6 +130,26 @@ You go home`
 `<p>This <em>is</em> abc</p>`)
     })
 
+    test('markdown - 3-1', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`This **is** abc`
+        )
+
+        
+        expect(html).toEqual(
+`<p>This <strong>is</strong> abc</p>`)
+    })
+
+    test('markdown - 3-1', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`This ***is*** abc`
+        )
+
+        
+        expect(html).toEqual(
+`<p>This <em><strong>is</strong></em> abc</p>`)
+    })
+
 
     test('markdown - 4', () => {
         var html : string = markdownToHtmlConverter.toHtml(
@@ -294,9 +314,9 @@ This is that.`
 
         
         expect(html).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <p>This is a sentence</p>
-</div>`
+</blockquote>`
         )
     })
 
@@ -320,9 +340,9 @@ This is that.`
 
         
         expect(html).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <br/>
-</div>`
+</blockquote>`
         )
     })
 
@@ -334,9 +354,9 @@ This is that.`
 
         
         expect(html).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <p>H</p>
-</div>`
+</blockquote>`
         )
     })
 
@@ -350,9 +370,9 @@ This is that.`
 
         
         expect(html).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <p>This is a sentence<br/>This is the second sentence</p>
-</div>`
+</blockquote>`
         )
     })
 
@@ -365,11 +385,11 @@ This is that.`
 
         
         expect(html).toEqual(
-`<div class="blockquote">
-    <div class="blockquote">
+`<blockquote>
+    <blockquote>
         <p>This is a sentence</p>
-    </div>
-</div>`
+    </blockquote>
+</blockquote>`
         )
     })
 
@@ -393,11 +413,11 @@ This is that.`
 
         
         expect(html).toEqual(
-`<div class="blockquote">
-    <div class="blockquote">
+`<blockquote>
+    <blockquote>
         <br/>
-    </div>
-</div>`
+    </blockquote>
+</blockquote>`
         )
     })
 
@@ -411,11 +431,11 @@ This is that.`
 
         
         expect(html).toEqual(
-`<div class="blockquote">
-    <div class="blockquote">
+`<blockquote>
+    <blockquote>
         <p>This is a sentence<br/>This is the</p>
-    </div>
-</div>`
+    </blockquote>
+</blockquote>`
         )
     })
 
@@ -430,12 +450,12 @@ This is that.`
 
         
         expect(html).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <h1>ONK</h1>
-    <div class="blockquote">
+    <blockquote>
         <p>This is a sentence<br/>This is the</p>
-    </div>
-</div>`
+    </blockquote>
+</blockquote>`
         )
     })
 
@@ -449,13 +469,13 @@ This is that.`
 
         
         expect(html).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <h1>ONK</h1>
-    <div class="blockquote">
+    <blockquote>
         <p>This is a sentence</p>
-    </div>
+    </blockquote>
     <p>This is the</p>
-</div>`
+</blockquote>`
         )
     })
 
@@ -528,9 +548,9 @@ This is that.`
         expect(html).toEqual(
 `<ol>
     <li>Fruite
-        <div class="blockquote">
+        <blockquote>
             <p>Apple<br/>Banana</p>
-        </div>
+        </blockquote>
     </li>
     <li>Animals</li>
 </ol>` 
@@ -572,9 +592,9 @@ This is that.`
         expect(html).toEqual(
 `<ol>
     <li>Fruite
-        <div class="blockquote">
+        <blockquote>
             <p>Red</p>
-        </div>
+        </blockquote>
     </li>
 </ol>` 
         )
@@ -596,9 +616,9 @@ This is that.`
     <li>Fruite
         <ol>
             <li>Apple
-                <div class="blockquote">
+                <blockquote>
                     <p>Red is my</p>
-                </div>
+                </blockquote>
             </li>
             <li>Banana</li>
         </ol>
@@ -625,9 +645,9 @@ This is that.`
         <ol>
             <li>Apple</li>
         </ol>
-        <div class="blockquote">
+        <blockquote>
             <p>Red is my</p>
-        </div>
+        </blockquote>
         <ol>
             <li>Banana</li>
         </ol>
@@ -713,7 +733,7 @@ This is that.`
 
         
         expect(html).toEqual(
-`<p>type \`nano\`.</p>` 
+`<p>type <code>nano</code>.</p>` 
         )
     })
 
@@ -724,7 +744,7 @@ This is that.`
 
         
         expect(html).toEqual(
-`<p>\`\`Use \`code\` in your Markdown file.\`\`</p>` 
+`<p><code>Use <code>code</code> in your Markdown file.</code></p>` 
         )
     })
 
@@ -1005,7 +1025,7 @@ This is that.`
 
         
         expect(html).toEqual(
-`<div class="blockquote">
+`<blockquote>
     \`\`\`
     {
       &quot;firstName&quot;: &quot;John&quot;,
@@ -1013,7 +1033,7 @@ This is that.`
       &quot;age&quot;: 25
     }
     \`\`\`
-</div>`
+</blockquote>`
         )      
     })
 
@@ -1034,7 +1054,7 @@ This is that.`
         expect(html).toEqual(
 `<ol>
     <li>coding
-        <div class="blockquote">
+        <blockquote>
             \`\`\`
             {
               &quot;firstName&quot;: &quot;John&quot;,
@@ -1042,7 +1062,7 @@ This is that.`
               &quot;age&quot;: 25
             }
             \`\`\`
-        </div>
+        </blockquote>
     </li>
 </ol>`)
     })
@@ -1285,9 +1305,9 @@ Second Term
 
         
         expect(html).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <p>First Term</p>
-</div>
+</blockquote>
 <dl>
     <dt></dt>
     <dd>This is the definition of the first term.</dd>
@@ -1304,12 +1324,12 @@ Second Term
 
         
         expect(html).toEqual(
-`<div class="blockquote">
+`<blockquote>
     <dl>
         <dt>First Term</dt>
         <dd>This is the definition of the first term.</dd>
     </dl>
-</div>`
+</blockquote>`
         )
     })
 
@@ -1331,7 +1351,7 @@ Second Term
 `<ol>
     <li>coding</li>
 </ol>
-<div class="blockquote">
+<blockquote>
     \`\`\`
     {
       &quot;firstName&quot;: &quot;John&quot;,
@@ -1339,7 +1359,7 @@ Second Term
       &quot;age&quot;: 25
     }
     \`\`\`
-</div>`
+</blockquote>`
         )
     })
 
@@ -1446,7 +1466,7 @@ Second Term
         
         expect(html).toEqual(
 `<div><span id="fn:Variable">Variable</span>This is good foot note.
-    <p>Indent paragraphs to include them in the footnote.<br/>\`{ my code }\`</p>
+    <p>Indent paragraphs to include them in the footnote.<br/><code>{ my code }</code></p>
     <br/>
     <p>Add as many paragraphs as you like.</p>
 </div>`
@@ -1458,7 +1478,7 @@ Second Term
         var html : string = markdownToHtmlConverter.toHtml(
 `[^Variable]: This is good foot note.
     > Indent paragraphs to include them in the footnote.
-    > \`{ my code }\`
+    > <code>{ my code }</code>
     
     > Add as many paragraphs as you like.`
         )
@@ -1466,13 +1486,14 @@ Second Term
         
         expect(html).toEqual(
 `<div><span id="fn:Variable">Variable</span>This is good foot note.
-    <div class="blockquote">
-        <p>Indent paragraphs to include them in the footnote.<br/>\`{ my code }\`</p>
-    </div>
+    <blockquote>
+        <p>Indent paragraphs to include them in the footnote.</p>
+&lt;code&gt;{ my code }&lt;/code&gt;
+    </blockquote>
     <br/>
-    <div class="blockquote">
+    <blockquote>
         <p>Add as many paragraphs as you like.</p>
-    </div>
+    </blockquote>
 </div>`
         )
     })
@@ -1490,11 +1511,11 @@ Second Term
         
         expect(html).toEqual(
 `<div><span id="fn:Variable">Variable</span>This is good foot note.
-    <div class="blockquote">
-        <p>Indent paragraphs to include them in the footnote.<br/>\`{ my code }\`</p>
+    <blockquote>
+        <p>Indent paragraphs to include them in the footnote.<br/><code>{ my code }</code></p>
         <br/>
         <p>Add as many paragraphs as you like.</p>
-    </div>
+    </blockquote>
 </div>`
         )
     })
@@ -1962,6 +1983,88 @@ Second Term
 `<p>\\*</p>`
         )
     })
+
+
+    test('markdown - inputing-32', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`> #### The quarterly results look great!
+> 
+> - Revenue was off the chart.
+> - Profits were higher than ever.
+> 
+>  *Everything* is going according to **plan**.`
+        )
+
+        
+        expect(html).toEqual(
+`<blockquote>
+    <h4>The quarterly results look great!</h4>
+    <br/>
+    <ul>
+        <li>Revenue was off the chart.</li>
+        <li>Profits were higher than ever.</li>
+    </ul>
+    <br/>
+    <p> <em>Everything</em> is going according to <strong>plan</strong>.</p>
+</blockquote>`
+        )
+    })
+
+    test('markdown - inputing-33', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+"At the command prompt, type `nano`."
+        )
+
+        
+        expect(html).toEqual(
+"<p>At the command prompt, type <code>nano</code>.</p>"
+        )
+    })
     
+    test('markdown - inputing-34', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+"``Use `code` in your Markdown file.``"
+        )
+
+        
+        expect(html).toEqual(
+"<p><code>Use <code>code</code> in your Markdown file.</code></p>"
+        )
+    })
+
+
+    
+    test('markdown - inputing-35', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+"My favorite search engine is [Duck Duck Go](https://duckduckgo.com)."
+        )
+
+        
+        expect(html).toEqual(
+"<p>My favorite search engine is <a href=\"https://duckduckgo.com\">Duck Duck Go</a>.</p>"
+        )
+    })
+    
+    test('markdown - inputing-36', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+"My favorite search engine is [Duck Duck Go](https://duckduckgo.com \"The best search engine for privacy\")."
+        )
+
+        
+        expect(html).toEqual(
+"<p>My favorite search engine is <a href=\"https://duckduckgo.com\" title=\"The best search engine for privacy\">Duck Duck Go</a>.</p>"
+        )
+    })
+
+    test('markdown - inputing-37', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+            `![The San Juan Mountains Image](/assets/images/san-juan-mountains.jpg "San Juan Mountains")`
+        )
+
+        
+        expect(html).toEqual(
+`<p><img src="/assets/images/san-juan-mountains.jpg" title="San Juan Mountains" alt="The San Juan Mountains Image"></p>`
+        )
+    })
 })
 

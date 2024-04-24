@@ -3925,6 +3925,94 @@ Second Term
         ])
         expect(htmlElement).toEqual(rootElement)
     })
+
+    
+    test('markdown - inputing-34', () => {
+        var markdown : Markdown = markdownSyntaxAnalyzer.toMarkddown(
+`engine [Duck Duck Go](https://duckduckgo.com).`
+        )
+
+        var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
+        var rootElement : html.HtmlElement = new html.HtmlRoot().initChildren([
+            new html.Paragraph().initChildren([
+                new html.Sentence().initChildren([
+                    new html.PlainText().initChildren([
+                        new html.Text('engine'),
+                        new html.Spaces(' '),
+                        new html.Link(
+                            new html.Sentence().initChildren([
+                                new html.PlainText().initChildren([
+                                    new html.Text('Duck'),
+                                    new html.Spaces(' '),
+                                    new html.Text('Duck'),
+                                    new html.Spaces(' '),
+                                    new html.Text('Go'),
+                                ])
+                            ]),
+                            "https://duckduckgo.com"
+                        ),
+                        new html.Text('.'),
+                    ])
+                ])
+            ])
+        ])
+        expect(htmlElement).toEqual(rootElement)
+    })
+
+    test('markdown - inputing-35', () => {
+        var markdown : Markdown = markdownSyntaxAnalyzer.toMarkddown(
+`engine [Duck Duck Go](https://duckduckgo.com "The best search engine for privacy").`
+        )
+
+        var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
+        var rootElement : html.HtmlElement = new html.HtmlRoot().initChildren([
+            new html.Paragraph().initChildren([
+                new html.Sentence().initChildren([
+                    new html.PlainText().initChildren([
+                        new html.Text('engine'),
+                        new html.Spaces(' '),
+                        new html.Link(
+                            new html.Sentence().initChildren([
+                                new html.PlainText().initChildren([
+                                    new html.Text('Duck'),
+                                    new html.Spaces(' '),
+                                    new html.Text('Duck'),
+                                    new html.Spaces(' '),
+                                    new html.Text('Go'),
+                                ])
+                            ]),
+                            "https://duckduckgo.com",
+                            "The best search engine for privacy"
+                        ),
+                        new html.Text('.'),
+                    ])
+                ])
+            ])
+        ])
+        expect(htmlElement).toEqual(rootElement)
+    })
+    
+    test('markdown - inputing-36', () => {
+        var markdown : Markdown = markdownSyntaxAnalyzer.toMarkddown(
+`![The San Juan Mountains Image](/assets/images/san-juan-mountains.jpg "San Juan Mountains")`
+        )
+
+        var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
+        var rootElement : html.HtmlElement = new html.HtmlRoot().initChildren([
+            new html.Paragraph().initChildren([
+                new html.Sentence().initChildren([
+                    new html.PlainText().initChildren([
+                        new html.Image(
+                            "/assets/images/san-juan-mountains.jpg",
+                            "The San Juan Mountains Image",
+                            "San Juan Mountains"
+                        )
+                    ])
+                ])
+            ])
+        ])
+        expect(htmlElement).toEqual(rootElement)
+    })
 })
 
 

@@ -77,8 +77,8 @@ export class HtmlRoot extends HtmlElement {
 }
 export class Blockquote extends HtmlElement {
     toHtmlString(intent : string=''): string {
-        var beginTag : string = intent + this.buildBeginHtmlString('div', ['class', 'blockquote'])
-        var endTag : string = intent + this.buildEndHtmlString('div')
+        var beginTag : string = intent + this.buildBeginHtmlString('blockquote')
+        var endTag : string = intent + this.buildEndHtmlString('blockquote')
         var innerHtml : string = this.buildChildrenHtmlString(intent+'    ')
         return [beginTag, innerHtml, endTag].join('\n')
     }
@@ -156,12 +156,12 @@ export class HorizontalRule extends HtmlStringElement {
 }
 export class BacktickText extends HtmlElement {
     toHtmlString(intent : string = ''): string {
-        return '`'+this.buildChildrenHtmlString('', '')+'`'
+        return '<code>'+this.buildChildrenHtmlString('', '')+'</code>'
     }
 }
 export class DoubleBacktickText extends HtmlElement {
     toHtmlString(intent : string = ''): string {
-        return '``'+this.buildChildrenHtmlString('', '')+'``'
+        return '<code>'+this.buildChildrenHtmlString('', '')+'</code>'
     }
 }
 
@@ -229,6 +229,60 @@ export class BoldText extends HtmlElement {
         var beginTag : string = intent + this.buildBeginHtmlString('strong')
         var endTag : string = this.buildEndHtmlString('strong')
         var innerHtml : string = this.buildChildrenHtmlString('', '')
+        return [beginTag, innerHtml, endTag].join('')
+    }
+}
+
+
+export class Image extends HtmlElement {
+    alt : string | null
+    url : string
+    title : string | null
+
+    constructor(url : string, alt : string |  null = null, title : string | null = null) {
+        super()
+        this.url = url
+        this.alt = alt
+        this.title = title
+    }
+
+    toHtmlString(intent : string = ''): string {
+        var imageProperties : string[] = ['src', this.url]
+        if (this.title!=null) {
+            imageProperties.push('title')
+            imageProperties.push(this.title)
+        }
+        if (this.alt!=null) {
+            imageProperties.push('alt')
+            imageProperties.push(this.alt)
+        }
+
+        var beginTag : string = this.buildBeginHtmlString(`img`, imageProperties)
+        return beginTag
+    }
+}
+
+export class Link extends HtmlElement {
+    alt : HtmlElement
+    url : string
+    title : string | null
+
+    constructor(alt : HtmlElement, url : string, title : string | null = null) {
+        super()
+        this.alt = alt
+        this.url = url
+        this.title = title
+    }
+
+    toHtmlString(intent : string = ''): string {
+        var linkProperties : string[] = ['href', this.url]
+        if (this.title!=null) {
+            linkProperties.push('title')
+            linkProperties.push(this.title)
+        }
+        var beginTag : string = this.buildBeginHtmlString(`a`, linkProperties)
+        var endTag : string = this.buildEndHtmlString(`a`)
+        var innerHtml : string = this.alt==null?'':this.alt.toHtmlString()
         return [beginTag, innerHtml, endTag].join('')
     }
 }

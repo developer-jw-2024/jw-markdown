@@ -1634,6 +1634,11 @@ export class Image extends MarkdownElement {
     getAlt() {
         return this.alt
     }
+
+    toHtml(): html.HtmlElement {
+        var e : html.Image = new html.Image(this.url, this.alt==null?null:this.alt, this.title==null?null:this.title)
+        return e
+    }
 }
 
 export class Link extends MarkdownElement {
@@ -1654,5 +1659,10 @@ export class Link extends MarkdownElement {
 
     getAlt() {
         return this.alt
+    }
+
+    toHtml(): html.HtmlElement {
+        var e : html.Link = new html.Link(this.alt.toHtml(), this.url, this.title==null?null:this.title)
+        return e
     }
 }

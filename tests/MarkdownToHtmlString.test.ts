@@ -973,7 +973,7 @@ This is that.`
 
     test('markdown - 42', () => {
         var markdown : Markdown = markdownSyntaxAnalyzer.toMarkddown(
-`\`\`\`
+`\`\`\`json
 {
   "firstName": "John",
   "lastName": "Smith",
@@ -984,13 +984,13 @@ This is that.`
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`\`\`\`
+`<pre><code class="json">
 {
   &quot;firstName&quot;: &quot;John&quot;,
   &quot;lastName&quot;: &quot;Smith&quot;,
   &quot;age&quot;: 25
 }
-\`\`\``
+</code></pre>`
         )
         
     })
@@ -1010,13 +1010,13 @@ This is that.`
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
 `<blockquote>
-    \`\`\`
-    {
-      &quot;firstName&quot;: &quot;John&quot;,
-      &quot;lastName&quot;: &quot;Smith&quot;,
-      &quot;age&quot;: 25
-    }
-    \`\`\`
+    <pre><code class="">
+{
+  &quot;firstName&quot;: &quot;John&quot;,
+  &quot;lastName&quot;: &quot;Smith&quot;,
+  &quot;age&quot;: 25
+}
+    </code></pre>
 </blockquote>`
         )      
     })
@@ -1039,13 +1039,13 @@ This is that.`
 `<ol>
     <li>coding
         <blockquote>
-            \`\`\`
-            {
-              &quot;firstName&quot;: &quot;John&quot;,
-              &quot;lastName&quot;: &quot;Smith&quot;,
-              &quot;age&quot;: 25
-            }
-            \`\`\`
+            <pre><code class="">
+{
+  &quot;firstName&quot;: &quot;John&quot;,
+  &quot;lastName&quot;: &quot;Smith&quot;,
+  &quot;age&quot;: 25
+}
+            </code></pre>
         </blockquote>
     </li>
 </ol>`)
@@ -1068,13 +1068,13 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>coding
-        \`\`\`
-        {
-            &quot;firstName&quot;: &quot;John&quot;,
-            &quot;lastName&quot;: &quot;Smith&quot;,
-            &quot;age&quot;: 25
-        }
-        \`\`\`
+        <pre><code class="">
+{
+    &quot;firstName&quot;: &quot;John&quot;,
+    &quot;lastName&quot;: &quot;Smith&quot;,
+    &quot;age&quot;: 25
+}
+        </code></pre>
     </li>
 </ol>`)
     })
@@ -1336,13 +1336,13 @@ Second Term
     <li>coding</li>
 </ol>
 <blockquote>
-    \`\`\`
-    {
-      &quot;firstName&quot;: &quot;John&quot;,
-      &quot;lastName&quot;: &quot;Smith&quot;,
-      &quot;age&quot;: 25
-    }
-    \`\`\`
+    <pre><code class="">
+{
+  &quot;firstName&quot;: &quot;John&quot;,
+  &quot;lastName&quot;: &quot;Smith&quot;,
+  &quot;age&quot;: 25
+}
+    </code></pre>
 </blockquote>`
         )
     })

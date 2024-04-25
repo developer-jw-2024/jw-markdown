@@ -1000,13 +1000,13 @@ This is that.`
 
         
         expect(html).toEqual(
-`\`\`\`
+`<pre><code class="">
 {
   &quot;firstName&quot;: &quot;John&quot;,
   &quot;lastName&quot;: &quot;Smith&quot;,
   &quot;age&quot;: 25
 }
-\`\`\``
+</code></pre>`
         )
         
     })
@@ -1026,13 +1026,13 @@ This is that.`
         
         expect(html).toEqual(
 `<blockquote>
-    \`\`\`
-    {
-      &quot;firstName&quot;: &quot;John&quot;,
-      &quot;lastName&quot;: &quot;Smith&quot;,
-      &quot;age&quot;: 25
-    }
-    \`\`\`
+    <pre><code class="">
+{
+  &quot;firstName&quot;: &quot;John&quot;,
+  &quot;lastName&quot;: &quot;Smith&quot;,
+  &quot;age&quot;: 25
+}
+    </code></pre>
 </blockquote>`
         )      
     })
@@ -1055,13 +1055,13 @@ This is that.`
 `<ol>
     <li>coding
         <blockquote>
-            \`\`\`
-            {
-              &quot;firstName&quot;: &quot;John&quot;,
-              &quot;lastName&quot;: &quot;Smith&quot;,
-              &quot;age&quot;: 25
-            }
-            \`\`\`
+            <pre><code class="">
+{
+  &quot;firstName&quot;: &quot;John&quot;,
+  &quot;lastName&quot;: &quot;Smith&quot;,
+  &quot;age&quot;: 25
+}
+            </code></pre>
         </blockquote>
     </li>
 </ol>`)
@@ -1084,13 +1084,13 @@ This is that.`
         expect(html).toEqual(
 `<ol>
     <li>coding
-        \`\`\`
-        {
-            &quot;firstName&quot;: &quot;John&quot;,
-            &quot;lastName&quot;: &quot;Smith&quot;,
-            &quot;age&quot;: 25
-        }
-        \`\`\`
+        <pre><code class="">
+{
+    &quot;firstName&quot;: &quot;John&quot;,
+    &quot;lastName&quot;: &quot;Smith&quot;,
+    &quot;age&quot;: 25
+}
+        </code></pre>
     </li>
 </ol>`)
     })
@@ -1352,13 +1352,13 @@ Second Term
     <li>coding</li>
 </ol>
 <blockquote>
-    \`\`\`
-    {
-      &quot;firstName&quot;: &quot;John&quot;,
-      &quot;lastName&quot;: &quot;Smith&quot;,
-      &quot;age&quot;: 25
-    }
-    \`\`\`
+    <pre><code class="">
+{
+  &quot;firstName&quot;: &quot;John&quot;,
+  &quot;lastName&quot;: &quot;Smith&quot;,
+  &quot;age&quot;: 25
+}
+    </code></pre>
 </blockquote>`
         )
     })
@@ -2149,13 +2149,13 @@ Second Term
 
         
         expect(html).toEqual(
-`\`\`\`
+`<pre><code class="">
 {
   &quot;firstName&quot;: &quot;John&quot;,
   &quot;lastName&quot;: &quot;Smith&quot;,
   &quot;age&quot;: 25
 }
-\`\`\``
+</code></pre>`
         )
     })
 })

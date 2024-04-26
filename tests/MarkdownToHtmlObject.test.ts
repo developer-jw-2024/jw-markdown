@@ -3110,7 +3110,7 @@ Second Term
                         new html.Text('note.'),
                     ])
                 ])
-            ).init('complementBlock', new html.HtmlRoot().initChildren([
+            ).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                 new html.Paragraph().initChildren([
                     new html.Sentence().initChildren([
                         new html.PlainText().initChildren([
@@ -3165,7 +3165,7 @@ Second Term
                         ])
                     ]),
                 ])
-            ]))
+            ])))
         ])
         expect(htmlElement).toEqual(rootElement)
     })
@@ -3197,7 +3197,7 @@ Second Term
                         new html.Text('note.'),
                     ])
                 ])
-            ).init('complementBlock', new html.HtmlRoot().initChildren([
+            ).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                 new html.Blockquote().initChildren([
                     new html.HtmlRoot().initChildren([
                         new html.Paragraph().initChildren([
@@ -3260,7 +3260,7 @@ Second Term
                         ])
                     ])
                 ])
-            ]))
+            ])))
         ])
         expect(htmlElement).toEqual(rootElement)
     })
@@ -3292,7 +3292,7 @@ Second Term
                         new html.Text('note.'),
                     ])
                 ])
-            ).init('complementBlock', new html.HtmlRoot().initChildren([
+            ).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                 new html.Blockquote().initChildren([
                     new html.HtmlRoot().initChildren([
                         new html.Paragraph().initChildren([
@@ -3351,7 +3351,7 @@ Second Term
                         ])
                     ])
                 ]),
-            ]))
+            ])))
         ])
         expect(htmlElement).toEqual(rootElement)
     })

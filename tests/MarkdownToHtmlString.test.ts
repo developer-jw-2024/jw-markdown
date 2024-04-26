@@ -474,7 +474,9 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>Fruite
-        <p>Apple</p>
+        <div class="complementBlock">
+            <p>Apple</p>
+        </div>
     </li>
 </ol>` 
         )
@@ -493,7 +495,9 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>Fruite
-        <p>Apple<br/>Banana</p>
+        <div class="complementBlock">
+            <p>Apple<br/>Banana</p>
+        </div>
     </li>
 </ol>` 
         )
@@ -512,7 +516,9 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>Fruite
-        <p>Apple<br/>Banana</p>
+        <div class="complementBlock">
+            <p>Apple<br/>Banana</p>
+        </div>
     </li>
     <li>Animals</li>
 </ol>` 
@@ -532,9 +538,11 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>Fruite
-        <blockquote>
-            <p>Apple<br/>Banana</p>
-        </blockquote>
+        <div class="complementBlock">
+            <blockquote>
+                <p>Apple<br/>Banana</p>
+            </blockquote>
+        </div>
     </li>
     <li>Animals</li>
 </ol>` 
@@ -554,10 +562,12 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>Fruite
-        <ol>
-            <li>Apple</li>
-            <li>Banana</li>
-        </ol>
+        <div class="complementBlock">
+            <ol>
+                <li>Apple</li>
+                <li>Banana</li>
+            </ol>
+        </div>
     </li>
     <li>Animals</li>
 </ol>` 
@@ -576,9 +586,11 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>Fruite
-        <blockquote>
-            <p>Red</p>
-        </blockquote>
+        <div class="complementBlock">
+            <blockquote>
+                <p>Red</p>
+            </blockquote>
+        </div>
     </li>
 </ol>` 
         )
@@ -598,14 +610,18 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>Fruite
-        <ol>
-            <li>Apple
-                <blockquote>
-                    <p>Red is my</p>
-                </blockquote>
-            </li>
-            <li>Banana</li>
-        </ol>
+        <div class="complementBlock">
+            <ol>
+                <li>Apple
+                    <div class="complementBlock">
+                        <blockquote>
+                            <p>Red is my</p>
+                        </blockquote>
+                    </div>
+                </li>
+                <li>Banana</li>
+            </ol>
+        </div>
     </li>
     <li>Animals</li>
 </ol>` 
@@ -626,15 +642,17 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>Fruite
-        <ol>
-            <li>Apple</li>
-        </ol>
-        <blockquote>
-            <p>Red is my</p>
-        </blockquote>
-        <ol>
-            <li>Banana</li>
-        </ol>
+        <div class="complementBlock">
+            <ol>
+                <li>Apple</li>
+            </ol>
+            <blockquote>
+                <p>Red is my</p>
+            </blockquote>
+            <ol>
+                <li>Banana</li>
+            </ol>
+        </div>
     </li>
     <li>Animals</li>
 </ol>` 
@@ -700,10 +718,12 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ul>
     <li>Fruite
-        <ul>
-            <li>Apple</li>
-            <li>Banana</li>
-        </ul>
+        <div class="complementBlock">
+            <ul>
+                <li>Apple</li>
+                <li>Banana</li>
+            </ul>
+        </div>
     </li>
     <li>Animal</li>
 </ul>` 
@@ -1038,15 +1058,17 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>coding
-        <blockquote>
-            <pre><code class="">
+        <div class="complementBlock">
+            <blockquote>
+                <pre><code class="">
 {
   &quot;firstName&quot;: &quot;John&quot;,
   &quot;lastName&quot;: &quot;Smith&quot;,
   &quot;age&quot;: 25
 }
-            </code></pre>
-        </blockquote>
+                </code></pre>
+            </blockquote>
+        </div>
     </li>
 </ol>`)
     })
@@ -1068,13 +1090,15 @@ This is that.`
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>coding
-        <pre><code class="">
+        <div class="complementBlock">
+            <pre><code class="">
 {
     &quot;firstName&quot;: &quot;John&quot;,
     &quot;lastName&quot;: &quot;Smith&quot;,
     &quot;age&quot;: 25
 }
-        </code></pre>
+            </code></pre>
+        </div>
     </li>
 </ol>`)
     })
@@ -1108,7 +1132,9 @@ This is that.`
 `<dl>
     <dt>First Term</dt>
     <dd>This is
-        <p>That are<br/>Bee.</p>
+        <div class="complementBlock">
+            <p>That are<br/>Bee.</p>
+        </div>
     </dd>
 </dl>`
         )
@@ -1129,7 +1155,9 @@ This is that.`
 `<dl>
     <dt>First Term</dt>
     <dd>This is
-        <p>That are<br/>Bee.</p>
+        <div class="complementBlock">
+            <p>That are<br/>Bee.</p>
+        </div>
     </dd>
     <dd>that are</dd>
 </dl>`
@@ -1152,7 +1180,9 @@ Second Term
 `<dl>
     <dt>First Term</dt>
     <dd>This is
-        <p>That are<br/>Bee.</p>
+        <div class="complementBlock">
+            <p>That are<br/>Bee.</p>
+        </div>
     </dd>
     <dd>that are</dd>
     <dt>Second Term</dt>
@@ -1366,7 +1396,7 @@ Second Term
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div><span id="fn:Variable">Variable</span>This is good foot note.</div>`
+`<div><span id="fn:Variable">Variable:</span>This is good foot note.</div>`
         )
     })
 
@@ -1379,8 +1409,10 @@ Second Term
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div><span id="fn:Variable">Variable</span>This is good foot note.
-    <p>Indent paragraphs to include them in the footnote.</p>
+`<div><span id="fn:Variable">Variable:</span>This is good foot note.
+    <div class="complementBlock">
+        <p>Indent paragraphs to include them in the footnote.</p>
+    </div>
 </div>`
         )
     })
@@ -1396,7 +1428,9 @@ Second Term
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>hello
-        <p>Apple</p>
+        <div class="complementBlock">
+            <p>Apple</p>
+        </div>
     </li>
 </ol>`
         )
@@ -1413,7 +1447,9 @@ Second Term
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>hello
-        <br/>
+        <div class="complementBlock">
+            <br/>
+        </div>
     </li>
 </ol>`
         )
@@ -1431,7 +1467,9 @@ Second Term
         expect(htmlElement.toHtmlString()).toEqual(
 `<ol>
     <li>hello
-        <br/>
+        <div class="complementBlock">
+            <br/>
+        </div>
     </li>
 </ol>`
         )
@@ -1449,10 +1487,12 @@ Second Term
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div><span id="fn:Variable">Variable</span>This is good foot note.
-    <p>Indent paragraphs to include them in the footnote.<br/><code>{ my code }</code></p>
-    <br/>
-    <p>Add as many paragraphs as you like.</p>
+`<div><span id="fn:Variable">Variable:</span>This is good foot note.
+    <div class="complementBlock">
+        <p>Indent paragraphs to include them in the footnote.<br/><code>{ my code }</code></p>
+        <br/>
+        <p>Add as many paragraphs as you like.</p>
+    </div>
 </div>`
         )
     })
@@ -1469,14 +1509,16 @@ Second Term
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div><span id="fn:Variable">Variable</span>This is good foot note.
-    <blockquote>
-        <p>Indent paragraphs to include them in the footnote.<br/><code>{ my code }</code></p>
-    </blockquote>
-    <br/>
-    <blockquote>
-        <p>Add as many paragraphs as you like.</p>
-    </blockquote>
+`<div><span id="fn:Variable">Variable:</span>This is good foot note.
+    <div class="complementBlock">
+        <blockquote>
+            <p>Indent paragraphs to include them in the footnote.<br/><code>{ my code }</code></p>
+        </blockquote>
+        <br/>
+        <blockquote>
+            <p>Add as many paragraphs as you like.</p>
+        </blockquote>
+    </div>
 </div>`
         )
     })
@@ -1493,12 +1535,14 @@ Second Term
 
         var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
         expect(htmlElement.toHtmlString()).toEqual(
-`<div><span id="fn:Variable">Variable</span>This is good foot note.
-    <blockquote>
-        <p>Indent paragraphs to include them in the footnote.<br/><code>{ my code }</code></p>
-        <br/>
-        <p>Add as many paragraphs as you like.</p>
-    </blockquote>
+`<div><span id="fn:Variable">Variable:</span>This is good foot note.
+    <div class="complementBlock">
+        <blockquote>
+            <p>Indent paragraphs to include them in the footnote.<br/><code>{ my code }</code></p>
+            <br/>
+            <p>Add as many paragraphs as you like.</p>
+        </blockquote>
+    </div>
 </div>`
         )
     })

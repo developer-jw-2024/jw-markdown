@@ -315,17 +315,36 @@ export class OrderedList extends HtmlElement {
         return [beginTag, innerHtml, endTag].join('\n')
     }
 }
+
+export class ComplementBlock extends HtmlElement {
+    complementContent : HtmlElement 
+
+    setComplementContent(complementContent : HtmlElement) {
+        this.complementContent = complementContent
+    }
+
+    toHtmlString(intent : string=''): string {
+        var beginTag : string = intent + this.buildBeginHtmlString(`div`, ['class', 'complementBlock'])
+        var complementBlockHtml : string =  this.complementContent==null?'':this.complementContent.toHtmlString(intent + '    ')
+        var endTag : string = intent + this.buildEndHtmlString(`div`)
+        return [beginTag , complementBlockHtml , endTag].join('\n')
+
+    }
+}
+
 export class OrderedItem extends HtmlElement {
     item : HtmlElement
-    complementBlock : HtmlElement 
+    complementBlock : ComplementBlock 
 
     constructor(item : HtmlElement) {
         super() 
         this.item = item
     }
 
-    setComplementBlock(complementBlock : HtmlElement) {
-        this.complementBlock = complementBlock
+    setComplementBlock(complementBlockElement : HtmlElement) {
+        // this.complementBlock = complementBlock
+        this.complementBlock = new ComplementBlock()
+        this.complementBlock.setComplementContent(complementBlockElement)
     }
 
     getComplementBlock() : HtmlElement | null {
@@ -387,15 +406,17 @@ export class DefinitionItem extends HtmlElement {
 }
 export class DefinitionItemValue extends HtmlElement {
     item : HtmlElement
-    complementBlock : HtmlElement 
+    complementBlock : ComplementBlock 
 
     constructor(item : HtmlElement) {
         super() 
         this.item = item
     }
 
-    setComplementBlock(complementBlock : HtmlElement) {
-        this.complementBlock = complementBlock
+    setComplementBlock(complementBlockElement : HtmlElement) {
+        // this.complementBlock = complementBlock
+        this.complementBlock = new ComplementBlock()
+        this.complementBlock.setComplementContent(complementBlockElement)
     }
 
     getComplementBlock() : HtmlElement | null {
@@ -434,15 +455,17 @@ export class UnorderedList extends HtmlElement {
 
 export class UnorderedItem extends HtmlElement {
     item : HtmlElement
-    complementBlock : HtmlElement 
+    complementBlock : ComplementBlock 
 
     constructor(item : HtmlElement) {
         super() 
         this.item = item
     }
 
-    setComplementBlock(complementBlock : HtmlElement) {
-        this.complementBlock = complementBlock
+    setComplementBlock(complementBlockElement : HtmlElement) {
+        // this.complementBlock = complementBlock
+        this.complementBlock = new ComplementBlock()
+        this.complementBlock.setComplementContent(complementBlockElement)
     }
 
     getComplementBlock() : HtmlElement | null {
@@ -599,7 +622,7 @@ export class TableCenterAlignment extends TableCellAlignment {}
 export class Footnote extends HtmlElement {
     footnoteIndex : HtmlElement | null = null
     detail : HtmlElement | null = null
-    complementBlock : HtmlElement | null = null
+    complementBlock : ComplementBlock | null = null
 
     constructor(footnoteReference : HtmlElement, detail : HtmlElement | null) {
         super()
@@ -607,8 +630,10 @@ export class Footnote extends HtmlElement {
         this.detail = detail
     }
 
-    setComplementBlock(complementBlock : HtmlElement) {
-        this.complementBlock = complementBlock
+    setComplementBlock(complementBlockElement : HtmlElement) {
+        // this.complementBlock = complementBlock
+        this.complementBlock = new ComplementBlock()
+        this.complementBlock.setComplementContent(complementBlockElement)
     }
 
     getComplementBlock() : HtmlElement | null {
@@ -647,7 +672,7 @@ export class FootnoteIndex extends HtmlValueElement {
     toHtmlString(intent : string = ''): string {
         var beginTag : string = intent + this.buildBeginHtmlString('span', ['id', `fn:${this.value.toHtmlString()}`] )
         var endTag : string = this.buildEndHtmlString('span')
-        var valueHtml : string = this.value.toHtmlString()
+        var valueHtml : string = this.value.toHtmlString()+":"
         return [beginTag, valueHtml, endTag].join('')
     }
 }

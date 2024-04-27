@@ -1026,7 +1026,7 @@ This is that.`
                     new html.PlainText().initChildren([
                         new html.Text('Fruite')
                     ])
-                ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                     new html.Paragraph().initChildren([
                         new html.Sentence().initChildren([
                             new html.PlainText().initChildren([
@@ -1034,7 +1034,7 @@ This is that.`
                             ])
                         ])
                     ])
-                ]))
+                ])))
             ])
         ])
         expect(htmlElement).toEqual(rootElement)
@@ -1055,7 +1055,7 @@ This is that.`
                     new html.PlainText().initChildren([
                         new html.Text('Fruite')
                     ])
-                ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                     new html.Paragraph().initChildren([
                         new html.Sentence().initChildren([
                             new html.PlainText().initChildren([
@@ -1068,7 +1068,7 @@ This is that.`
                             ])
                         ])
                     ])
-                ]))
+                ])))
             ])
         ])
         expect(htmlElement).toEqual(rootElement)
@@ -1090,7 +1090,7 @@ This is that.`
                     new html.PlainText().initChildren([
                         new html.Text('Fruite')
                     ])
-                ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                     new html.Paragraph().initChildren([
                         new html.Sentence().initChildren([
                             new html.PlainText().initChildren([
@@ -1103,7 +1103,7 @@ This is that.`
                             ])
                         ])
                     ])
-                ])),
+                ]))),
                 new html.OrderedItem(new html.Sentence().initChildren([
                     new html.PlainText().initChildren([
                         new html.Text('Animals')
@@ -1130,7 +1130,7 @@ This is that.`
                     new html.PlainText().initChildren([
                         new html.Text('Fruite')
                     ])
-                ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                     new html.Blockquote().initChildren([
                         new html.HtmlRoot().initChildren([
                             new html.Paragraph().initChildren([
@@ -1147,7 +1147,7 @@ This is that.`
                             ])
                         ])
                     ])
-                ])),
+                ]))),
                 new html.OrderedItem(new html.Sentence().initChildren([
                     new html.PlainText().initChildren([
                         new html.Text('Animals')
@@ -1174,7 +1174,7 @@ This is that.`
                     new html.PlainText().initChildren([
                         new html.Text('Fruite')
                     ])
-                ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                     new html.OrderedList().initChildren([
                         new html.OrderedItem(new html.Sentence().initChildren([
                             new html.PlainText().initChildren([
@@ -1187,7 +1187,7 @@ This is that.`
                             ])
                         ]))
                     ])
-                ])),
+                ]))),
                 new html.OrderedItem(new html.Sentence().initChildren([
                     new html.PlainText().initChildren([
                         new html.Text('Animals')
@@ -1213,7 +1213,7 @@ This is that.`
                     new html.PlainText().initChildren([
                         new html.Text('Fruite')
                     ])
-                ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                     new html.Blockquote().initChildren([
                         new html.HtmlRoot().initChildren([
                             new html.Paragraph().initChildren([
@@ -1225,7 +1225,7 @@ This is that.`
                             ])
                         ])
                     ])
-                ])),
+                ]))),
             ])
         ])
         expect(htmlElement).toEqual(rootElement)
@@ -1248,13 +1248,13 @@ This is that.`
                     new html.PlainText().initChildren([
                         new html.Text('Fruite')
                     ])
-                ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                     new html.OrderedList().initChildren([
                         new html.OrderedItem(new html.Sentence().initChildren([
                             new html.PlainText().initChildren([
                                 new html.Text('Apple')
                             ])
-                        ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                        ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                             new html.Blockquote().initChildren([
                                 new html.HtmlRoot().initChildren([
                                     new html.Paragraph().initChildren([
@@ -1270,7 +1270,7 @@ This is that.`
                                     ])
                                 ])
                             ])
-                        ])),
+                        ]))),
                         new html.OrderedItem(new html.Sentence().initChildren([
                             new html.PlainText().initChildren([
                                 new html.Text('Banana')
@@ -1278,7 +1278,7 @@ This is that.`
                         ]))
                     ])
                     
-                ])),
+                ]))),
                 new html.OrderedItem(new html.Sentence().initChildren([
                     new html.PlainText().initChildren([
                         new html.Text('Animals')
@@ -1306,7 +1306,7 @@ This is that.`
                     new html.PlainText().initChildren([
                         new html.Text('Fruite')
                     ])
-                ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                     new html.OrderedList().initChildren([
                         new html.OrderedItem(new html.Sentence().initChildren([
                             new html.PlainText().initChildren([
@@ -1337,7 +1337,7 @@ This is that.`
                         ]))
                     ]),
                     
-                ])),
+                ]))),
                 new html.OrderedItem(new html.Sentence().initChildren([
                     new html.PlainText().initChildren([
                         new html.Text('Animals')
@@ -1425,7 +1425,7 @@ This is that.`
                     new html.PlainText().initChildren([
                         new html.Text('Fruite')
                     ])
-                ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                     new html.UnorderedList().initChildren([
                         new html.UnorderedItem(new html.Sentence().initChildren([
                             new html.PlainText().initChildren([
@@ -1438,7 +1438,7 @@ This is that.`
                             ])
                         ]))
                     ])
-                ])),
+                ]))),
                 new html.UnorderedItem(new html.Sentence().initChildren([
                     new html.PlainText().initChildren([
                         new html.Text('Animal')
@@ -2173,7 +2173,7 @@ This is that.`
                     new html.PlainText().initChildren([
                         new html.Text('coding')
                     ])
-                ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                     new html.Blockquote().initChildren([
                         new html.HtmlRoot().initChildren([
                             new html.FencedCodeBlockText(
@@ -2186,7 +2186,7 @@ This is that.`
 \`\`\``)
                         ])
                     ])
-                ])),
+                ]))),
             ])
         ])
         expect(htmlElement).toEqual(rootElement)
@@ -2211,7 +2211,7 @@ This is that.`
                     new html.PlainText().initChildren([
                         new html.Text('coding')
                     ])
-                ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                     new html.FencedCodeBlockText(
 `\`\`\`
 {
@@ -2221,7 +2221,7 @@ This is that.`
 }
 \`\`\``)
                     ])
-                ),
+                )),
             ])
         ])
         expect(htmlElement).toEqual(rootElement)
@@ -2293,7 +2293,7 @@ This is that.`
                             new html.Spaces(' '),
                             new html.Text('is'),
                         ])
-                    ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                    ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                         new html.Paragraph().initChildren([
                             new html.Sentence().initChildren([
                                 new html.PlainText().initChildren([
@@ -2308,7 +2308,7 @@ This is that.`
                                 ])
                             ])
                         ])
-                    ]))
+                    ])))
                 ])
             ])
         ])
@@ -2341,7 +2341,7 @@ This is that.`
                             new html.Spaces(' '),
                             new html.Text('is'),
                         ])
-                    ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                    ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                         new html.Paragraph().initChildren([
                             new html.Sentence().initChildren([
                                 new html.PlainText().initChildren([
@@ -2356,7 +2356,7 @@ This is that.`
                                 ])
                             ])
                         ])
-                    ])),
+                    ]))),
                     new html.DefinitionItemValue(new html.Sentence().initChildren([
                         new html.PlainText().initChildren([
                             new html.Text('that'),
@@ -2397,7 +2397,7 @@ Second Term
                             new html.Spaces(' '),
                             new html.Text('is'),
                         ])
-                    ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                    ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                         new html.Paragraph().initChildren([
                             new html.Sentence().initChildren([
                                 new html.PlainText().initChildren([
@@ -2412,7 +2412,7 @@ Second Term
                                 ])
                             ])
                         ])
-                    ])),
+                    ]))),
                     new html.DefinitionItemValue(new html.Sentence().initChildren([
                         new html.PlainText().initChildren([
                             new html.Text('that'),
@@ -2983,7 +2983,7 @@ Second Term
                         new html.Text('note.'),
                     ])
                 ])
-            ).init('complementBlock', new html.HtmlRoot().initChildren([
+            ).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                 new html.Paragraph().initChildren([
                     new html.Sentence().initChildren([
                         new html.PlainText().initChildren([
@@ -3005,7 +3005,7 @@ Second Term
                         ])
                     ])
                 ])
-            ]))
+            ])))
         ])
         expect(htmlElement).toEqual(rootElement)
     })
@@ -3024,7 +3024,7 @@ Second Term
                     new html.PlainText().initChildren([
                         new html.Text('hello'),
                     ])
-                ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                     new html.Paragraph().initChildren([
                         new html.Sentence().initChildren([
                             new html.PlainText().initChildren([
@@ -3032,7 +3032,7 @@ Second Term
                             ])
                         ])
                     ])
-                ]))
+                ])))
             ])
         ])
         expect(htmlElement).toEqual(rootElement)
@@ -3052,9 +3052,9 @@ Second Term
                     new html.PlainText().initChildren([
                         new html.Text('hello'),
                     ])
-                ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                     new html.BlankLine()
-                ]))
+                ])))
             ])
         ])
         expect(htmlElement).toEqual(rootElement)
@@ -3075,9 +3075,9 @@ Second Term
                     new html.PlainText().initChildren([
                         new html.Text('hello'),
                     ])
-                ])).init('complementBlock', new html.HtmlRoot().initChildren([
+                ])).init('complementBlock', new html.ComplementBlock().init('complementContent', new html.HtmlRoot().initChildren([
                     new html.BlankLine()
-                ]))
+                ])))
             ])
         ])
         expect(htmlElement).toEqual(rootElement)

@@ -2283,5 +2283,21 @@ Second Term
 </ol>`
         )
     })
+
+    test('markdown - inputing-43', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`- One
+- Two
+- Three`
+        )
+
+        expect(html).toEqual(
+`<ul>
+    <li>One</li>
+    <li>Two</li>
+    <li>Three</li>
+</ul>`
+        )
+    })
 })
 

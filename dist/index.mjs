@@ -1569,7 +1569,7 @@ var ComplementBlock2 = class extends MarkdownElement {
   }
   getContent() {
     return this.complements.map((c) => {
-      return c.getRawValue();
+      return c.getOriginalContent();
     }).join("\n");
   }
   addComplement(complement) {

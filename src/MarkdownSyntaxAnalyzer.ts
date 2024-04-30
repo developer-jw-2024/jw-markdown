@@ -7,7 +7,11 @@ export class MarkdownSyntaxAnalyzer {
     lrSyntaxAnalyzerRunner: lr.LRSyntaxAnalyzerRunner
 
     init() {
-        this.lrSyntaxAnalyzerRunner = new lr.LRSyntaxAnalyzerRunner().init(definition.languageDefinition, definition.tokenTypeDefinition, MarkdownLanguageFunctionsEntity)
+        return this.initWithDefinition(definition.languageDefinition, definition.tokenTypeDefinition)
+    }
+
+    initWithDefinition(languageDefinition : string, tokenTypeDefinition : string) {
+        this.lrSyntaxAnalyzerRunner = new lr.LRSyntaxAnalyzerRunner().init(languageDefinition, tokenTypeDefinition, MarkdownLanguageFunctionsEntity)
         this.lrSyntaxAnalyzerRunner.setPreprocessing((v:string):string=>{
             if (v.at(-1)!='\n') return v+'\n'
             return v

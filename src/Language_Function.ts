@@ -32,9 +32,14 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
     /** */
     @syntax.GrammarProductionFunction(`WholeMarkdownLine -> BeginStarItalicText enter`)
     WholeMarkdownLine__BeginStarItalicText_enter(argv : Array<syntax.AnalysisToken>) {
+        // console.log(argv[0].value)
         if (argv[0].value.isFirstElementSpaces()) {
             argv[0].value.removeFirstSpaces()
-            var unorderedItem : UnorderedItem = new UnorderedItem('*', argv[0].value.children[0])
+            var sentence : Sentence = new Sentence()
+            sentence.children = argv[0].value.children
+            sentence.markdownElements = argv[0].value.markdownElements
+            // console.log(argv[0].value.children)
+            var unorderedItem : UnorderedItem = new UnorderedItem('*', sentence)
             var lines : MarkdownLines = new MarkdownLines()
             lines.addChild(unorderedItem)
             return lines    
@@ -48,7 +53,10 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
     WholeMarkdownLine__WholeMarkdownLine_BeginStarItalicText_enter(argv : Array<syntax.AnalysisToken>) {
         if (argv[1].value.isFirstElementSpaces()) {
             argv[1].value.removeFirstSpaces()
-            var unorderedItem : UnorderedItem = new UnorderedItem('*', argv[1].value.children[0])
+            var sentence : Sentence = new Sentence()
+            sentence.children = argv[1].value.children
+            sentence.markdownElements = argv[1].value.markdownElements
+            var unorderedItem : UnorderedItem = new UnorderedItem('*', sentence)
             var lines : MarkdownLines = argv[0].value
             lines.addChild(unorderedItem)
             return lines

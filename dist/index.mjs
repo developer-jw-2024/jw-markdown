@@ -2125,7 +2125,10 @@ var MarkdownLanguageFunctionsEntity = class extends syntax2.LanguageFunctionsEnt
   WholeMarkdownLine__BeginStarItalicText_enter(argv) {
     if (argv[0].value.isFirstElementSpaces()) {
       argv[0].value.removeFirstSpaces();
-      var unorderedItem = new UnorderedItem2("*", argv[0].value.children[0]);
+      var sentence = new Sentence2();
+      sentence.children = argv[0].value.children;
+      sentence.markdownElements = argv[0].value.markdownElements;
+      var unorderedItem = new UnorderedItem2("*", sentence);
       var lines = new MarkdownLines();
       lines.addChild(unorderedItem);
       return lines;
@@ -2138,7 +2141,10 @@ var MarkdownLanguageFunctionsEntity = class extends syntax2.LanguageFunctionsEnt
   WholeMarkdownLine__WholeMarkdownLine_BeginStarItalicText_enter(argv) {
     if (argv[1].value.isFirstElementSpaces()) {
       argv[1].value.removeFirstSpaces();
-      var unorderedItem = new UnorderedItem2("*", argv[1].value.children[0]);
+      var sentence = new Sentence2();
+      sentence.children = argv[1].value.children;
+      sentence.markdownElements = argv[1].value.markdownElements;
+      var unorderedItem = new UnorderedItem2("*", sentence);
       var lines = argv[0].value;
       lines.addChild(unorderedItem);
       return lines;

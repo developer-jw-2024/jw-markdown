@@ -1148,8 +1148,7 @@ export class ComplementBlock extends MarkdownElement {
 
     getContent() : string {
         return this.complements.map(c=>{
-            // console.log(`[${c.getRawValue()}]`)
-            return c.getRawValue()
+            return c.getOriginalContent()
         }).join('\n')
     }
 

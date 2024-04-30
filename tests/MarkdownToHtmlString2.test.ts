@@ -2263,5 +2263,25 @@ Second Term
 </ol>`
         )
     })
+
+    test('markdown - inputing-42', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`1. Fruit
+    Ap**pl**e
+    Boy
+2. Animal`
+        )
+
+        expect(html).toEqual(
+`<ol>
+    <li>Fruit
+        <div class="complementBlock">
+            <p>Ap<strong>pl</strong>e<br/>Boy</p>
+        </div>
+    </li>
+    <li>Animal</li>
+</ol>`
+        )
+    })
 })
 

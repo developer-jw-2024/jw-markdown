@@ -171,7 +171,12 @@ var Text = class extends HtmlStringElement {
 };
 var FencedCodeBlockText = class extends HtmlStringElement {
   toHtmlString(intent = "") {
-    return (0, import_html_entities.encode)(this.value).split("\n").map((x) => intent + x).join("\n");
+    var lines = (0, import_html_entities.encode)(this.value).split("\n");
+    var language = lines[0].trim().substring(3);
+    var content = lines.slice(1, lines.length - 1).join("\n");
+    return `${intent}<pre><code class="${language}">
+${content}
+${intent}</code></pre>`;
   }
 };
 var HorizontalRule = class extends HtmlStringElement {
@@ -313,13 +318,25 @@ var OrderedList = class extends HtmlElement {
     return [beginTag, innerHtml, endTag].join("\n");
   }
 };
+var ComplementBlock = class extends HtmlElement {
+  setComplementContent(complementContent) {
+    this.complementContent = complementContent;
+  }
+  toHtmlString(intent = "") {
+    var beginTag = intent + this.buildBeginHtmlString(`div`, ["class", "complementBlock"]);
+    var complementBlockHtml = this.complementContent == null ? "" : this.complementContent.toHtmlString(intent + "    ");
+    var endTag = intent + this.buildEndHtmlString(`div`);
+    return [beginTag, complementBlockHtml, endTag].join("\n");
+  }
+};
 var OrderedItem = class extends HtmlElement {
   constructor(item) {
     super();
     this.item = item;
   }
-  setComplementBlock(complementBlock) {
-    this.complementBlock = complementBlock;
+  setComplementBlock(complementBlockElement) {
+    this.complementBlock = new ComplementBlock();
+    this.complementBlock.setComplementContent(complementBlockElement);
   }
   getComplementBlock() {
     return this.complementBlock;
@@ -375,8 +392,9 @@ var DefinitionItemValue = class extends HtmlElement {
     super();
     this.item = item;
   }
-  setComplementBlock(complementBlock) {
-    this.complementBlock = complementBlock;
+  setComplementBlock(complementBlockElement) {
+    this.complementBlock = new ComplementBlock();
+    this.complementBlock.setComplementContent(complementBlockElement);
   }
   getComplementBlock() {
     return this.complementBlock;
@@ -413,8 +431,9 @@ var UnorderedItem = class extends HtmlElement {
     super();
     this.item = item;
   }
-  setComplementBlock(complementBlock) {
-    this.complementBlock = complementBlock;
+  setComplementBlock(complementBlockElement) {
+    this.complementBlock = new ComplementBlock();
+    this.complementBlock.setComplementContent(complementBlockElement);
   }
   getComplementBlock() {
     return this.complementBlock;
@@ -565,8 +584,9 @@ var Footnote = class extends HtmlElement {
     this.footnoteIndex = new FootnoteIndex(footnoteReference.getValue());
     this.detail = detail;
   }
-  setComplementBlock(complementBlock) {
-    this.complementBlock = complementBlock;
+  setComplementBlock(complementBlockElement) {
+    this.complementBlock = new ComplementBlock();
+    this.complementBlock.setComplementContent(complementBlockElement);
   }
   getComplementBlock() {
     return this.complementBlock;
@@ -599,7 +619,7 @@ var FootnoteIndex = class extends HtmlValueElement {
   toHtmlString(intent = "") {
     var beginTag = intent + this.buildBeginHtmlString("span", ["id", `fn:${this.value.toHtmlString()}`]);
     var endTag = this.buildEndHtmlString("span");
-    var valueHtml = this.value.toHtmlString();
+    var valueHtml = this.value.toHtmlString() + ":";
     return [beginTag, valueHtml, endTag].join("");
   }
 };
@@ -678,7 +698,7 @@ var MarkdownElement = class extends import_ts_parser_generator2.syntax.SymbolEnt
   }
   mergeUnhandledComplementBlocks(elements) {
     var result = [].concat.apply([], elements);
-    result = result.filter((x) => import_ts_parser_generator2.utils.Utils.isTypeOf(x, ComplementBlock));
+    result = result.filter((x) => import_ts_parser_generator2.utils.Utils.isTypeOf(x, ComplementBlock2));
     var list = [];
     for (var i = 0; i < result.length; i++) {
       var complementBlock = result[i];
@@ -700,7 +720,7 @@ var MarkdownElement = class extends import_ts_parser_generator2.syntax.SymbolEnt
   }
   getUnhandledComplementBlockByMarkdownElement(element) {
     var childComplementBlocks = [];
-    if (import_ts_parser_generator2.utils.Utils.isTypeOf(element, ComplementBlock)) {
+    if (import_ts_parser_generator2.utils.Utils.isTypeOf(element, ComplementBlock2)) {
       var complementBlock = element;
       if (complementBlock.isHandled()) {
         childComplementBlocks = element.getUnhandledChildrenComplementBlocks();
@@ -1401,7 +1421,7 @@ var Footnote2 = class extends MarkdownElement {
   }
   addComplement(element) {
     if (this.complementBlock == null) {
-      this.complementBlock = new ComplementBlock();
+      this.complementBlock = new ComplementBlock2();
     }
     this.complementBlock.addComplement(element);
   }
@@ -1562,7 +1582,7 @@ var Complement = class extends MarkdownElement {
     return this.intent + (this.value != null ? this.value.getRawValue() : "");
   }
 };
-var ComplementBlock = class extends MarkdownElement {
+var ComplementBlock2 = class extends MarkdownElement {
   constructor() {
     super();
     this.isHandledFlag = false;
@@ -1662,7 +1682,7 @@ var OrderedItem2 = class extends MarkdownValueElement {
   addElement(element) {
     if (element.getClass() == Complement) {
       if (this.complementBlock == null) {
-        this.complementBlock = new ComplementBlock();
+        this.complementBlock = new ComplementBlock2();
       }
       this.complementBlock.addComplement(element);
     } else {
@@ -1747,7 +1767,7 @@ var UnorderedItem2 = class extends MarkdownValueElement {
   addElement(element) {
     if (element.getClass() == Complement) {
       if (this.complementBlock == null) {
-        this.complementBlock = new ComplementBlock();
+        this.complementBlock = new ComplementBlock2();
       }
       this.complementBlock.addComplement(element);
     } else {
@@ -1854,7 +1874,7 @@ var DefinitionItemValue2 = class extends MarkdownValueElement {
   }
   addComplement(element) {
     if (this.complementBlock == null) {
-      this.complementBlock = new ComplementBlock();
+      this.complementBlock = new ComplementBlock2();
     }
     this.complementBlock.addComplement(element);
   }

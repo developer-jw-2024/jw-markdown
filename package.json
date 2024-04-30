@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "npm run buildJSON  rm -rf dist && tsup && npm run copy-files",
-    "buildJSON":"npx tsx ./tests/makeJSON.ts",
+    "buildJSON": "npx tsx ./tests/makeJSON.ts",
     "copy-files": "cp src/*.txt dist",
     "test": "jest --coverage --watch"
   },
@@ -23,7 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "html-entities": "^2.5.2",
-    "ts-parser-generator": "^0.0.18"
+    "ts-parser-generator": "file:../ts-parser-generator"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",

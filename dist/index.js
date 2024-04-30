@@ -257,6 +257,38 @@ var BoldText = class extends HtmlElement {
     return [beginTag, innerHtml, endTag].join("");
   }
 };
+var StrikethroughText = class extends HtmlElement {
+  toHtmlString(intent = "") {
+    var beginTag = intent + this.buildBeginHtmlString("span", ["class", "strikethroughText"]);
+    var endTag = this.buildEndHtmlString("span");
+    var innerHtml = this.buildChildrenHtmlString("", "");
+    return [beginTag, innerHtml, endTag].join("");
+  }
+};
+var HighlightText = class extends HtmlElement {
+  toHtmlString(intent = "") {
+    var beginTag = intent + this.buildBeginHtmlString("span", ["class", "highlightText"]);
+    var endTag = this.buildEndHtmlString("span");
+    var innerHtml = this.buildChildrenHtmlString("", "");
+    return [beginTag, innerHtml, endTag].join("");
+  }
+};
+var SubscriptText = class extends HtmlElement {
+  toHtmlString(intent = "") {
+    var beginTag = intent + this.buildBeginHtmlString("span", ["class", "subscriptText"]);
+    var endTag = this.buildEndHtmlString("span");
+    var innerHtml = this.buildChildrenHtmlString("", "");
+    return [beginTag, innerHtml, endTag].join("");
+  }
+};
+var SuperscriptText = class extends HtmlElement {
+  toHtmlString(intent = "") {
+    var beginTag = intent + this.buildBeginHtmlString("span", ["class", "superscriptText"]);
+    var endTag = this.buildEndHtmlString("span");
+    var innerHtml = this.buildChildrenHtmlString("", "");
+    return [beginTag, innerHtml, endTag].join("");
+  }
+};
 var Image = class extends HtmlElement {
   constructor(url, alt = null, title = null) {
     super();
@@ -757,6 +789,7 @@ var MarkdownValueElement = class extends MarkdownElement {
     super();
     this.value = null;
     this.value = value;
+    this.setOriginalContent(this.value);
   }
   getRawValue() {
     if (import_ts_parser_generator2.utils.Utils.isTypeOf(this.value, String)) {
@@ -1304,6 +1337,27 @@ var ItalicText2 = class extends MarkdownElement {
   }
 };
 var StarItalicText = class extends ItalicText2 {
+  isFirstElementSpaces() {
+    var parent = this;
+    var lastLeftChild = this.children[0];
+    while (lastLeftChild.children.length > 0) {
+      parent = lastLeftChild;
+      lastLeftChild = parent.children[0];
+    }
+    return lastLeftChild.constructor == Spaces2;
+  }
+  removeFirstSpaces() {
+    var parent = this;
+    var lastLeftChild = this.children[0];
+    while (lastLeftChild.children.length > 0) {
+      parent = lastLeftChild;
+      lastLeftChild = parent.children[0];
+    }
+    if (lastLeftChild.constructor == Spaces2) {
+      lastLeftChild.value = lastLeftChild.value.substring(1);
+      lastLeftChild.originalContent = lastLeftChild.value;
+    }
+  }
 };
 var UnderlineItalicText = class extends ItalicText2 {
 };
@@ -1324,13 +1378,49 @@ var StarBoldItalicText = class extends BoldItalicText {
 };
 var UnderlineBoldItalicText = class extends BoldItalicText {
 };
-var StrikethroughText = class extends MarkdownElement {
+var StrikethroughText2 = class extends MarkdownElement {
+  addChild(child) {
+    this.children.push(child);
+    this.markdownElements.push(child);
+  }
+  toHtml() {
+    var e2 = new StrikethroughText();
+    e2.setChildren(this.toChildrenMarkdownElementsHtml());
+    return e2;
+  }
 };
-var HighlightText = class extends MarkdownElement {
+var HighlightText2 = class extends MarkdownElement {
+  addChild(child) {
+    this.children.push(child);
+    this.markdownElements.push(child);
+  }
+  toHtml() {
+    var e2 = new HighlightText();
+    e2.setChildren(this.toChildrenMarkdownElementsHtml());
+    return e2;
+  }
 };
-var SubscriptText = class extends MarkdownElement {
+var SubscriptText2 = class extends MarkdownElement {
+  addChild(child) {
+    this.children.push(child);
+    this.markdownElements.push(child);
+  }
+  toHtml() {
+    var e2 = new SubscriptText();
+    e2.setChildren(this.toChildrenMarkdownElementsHtml());
+    return e2;
+  }
 };
-var SuperscriptText = class extends MarkdownElement {
+var SuperscriptText2 = class extends MarkdownElement {
+  addChild(child) {
+    this.children.push(child);
+    this.markdownElements.push(child);
+  }
+  toHtml() {
+    var e2 = new SuperscriptText();
+    e2.setChildren(this.toChildrenMarkdownElementsHtml());
+    return e2;
+  }
 };
 var DoubleBacktickText2 = class extends MarkdownElement {
   addChild(child) {
@@ -1469,8 +1559,24 @@ var Footnote2 = class extends MarkdownElement {
   }
 };
 var URLAddress = class extends MarkdownValueElement {
+  toHtml() {
+    var value = this.value.substring(1, this.value.length - 1);
+    if (value.indexOf("@") > 0) {
+      value = `mailto:${value}`;
+    }
+    var alt = new Text(value);
+    var e = new Link(alt, value, null);
+    return e;
+  }
 };
 var EmailAddress = class extends MarkdownValueElement {
+  toHtml() {
+    var mail = this.value.substring(1, this.value.length - 1);
+    var href = `mailto:${mail}`;
+    var alt = new Text(mail);
+    var e = new Link(alt, href, null);
+    return e;
+  }
 };
 var Emoji = class extends MarkdownValueElement {
 };
@@ -2038,6 +2144,32 @@ var MarkdownLanguageFunctionsEntity = class extends import_ts_parser_generator3.
     lines.addChild(argv[1].value);
     return lines;
   }
+  WholeMarkdownLine__BeginStarItalicText_enter(argv) {
+    if (argv[0].value.isFirstElementSpaces()) {
+      argv[0].value.removeFirstSpaces();
+      var unorderedItem = new UnorderedItem2("*", argv[0].value.children[0]);
+      var lines = new MarkdownLines();
+      lines.addChild(unorderedItem);
+      return lines;
+    } else {
+      var lines = new MarkdownLines();
+      lines.addChild(new MarkdownError(argv[0].value.getOriginalContent()));
+      return lines;
+    }
+  }
+  WholeMarkdownLine__WholeMarkdownLine_BeginStarItalicText_enter(argv) {
+    if (argv[1].value.isFirstElementSpaces()) {
+      argv[1].value.removeFirstSpaces();
+      var unorderedItem = new UnorderedItem2("*", argv[1].value.children[0]);
+      var lines = argv[0].value;
+      lines.addChild(unorderedItem);
+      return lines;
+    } else {
+      var lines = new MarkdownLines();
+      lines.addChild(new MarkdownError(argv[1].value.getOriginalContent()));
+      return lines;
+    }
+  }
   WholeMarkdownLine__ERROR_enter(argv) {
     var lines = new MarkdownLines();
     lines.addChild(new MarkdownError(argv[0].value));
@@ -2485,7 +2617,7 @@ var MarkdownLanguageFunctionsEntity = class extends import_ts_parser_generator3.
     return argv[0].value;
   }
   BeginStrikethroughText__strikethroughTag_NO_StrikethroughText_Match_emphasis(argv) {
-    var strikethroughText = new StrikethroughText();
+    var strikethroughText = new StrikethroughText2();
     strikethroughText.addChild(argv[1].value);
     return strikethroughText;
   }
@@ -2498,7 +2630,7 @@ var MarkdownLanguageFunctionsEntity = class extends import_ts_parser_generator3.
     return argv[0].value;
   }
   BeginHighlightText__highlightTag_NO_HighlightText_Match_emphasis(argv) {
-    var highlightText = new HighlightText();
+    var highlightText = new HighlightText2();
     highlightText.addChild(argv[1].value);
     return highlightText;
   }
@@ -2511,7 +2643,7 @@ var MarkdownLanguageFunctionsEntity = class extends import_ts_parser_generator3.
     return argv[0].value;
   }
   BeginSubscriptText__subscriptTag_NO_SubscriptText_Match_emphasis(argv) {
-    var subscriptText = new SubscriptText();
+    var subscriptText = new SubscriptText2();
     subscriptText.addChild(argv[1].value);
     return subscriptText;
   }
@@ -2524,7 +2656,7 @@ var MarkdownLanguageFunctionsEntity = class extends import_ts_parser_generator3.
     return argv[0].value;
   }
   BeginSuperscriptText__superscriptTag_NO_SuperscriptText_Match_emphasis(argv) {
-    var superscriptText = new SuperscriptText();
+    var superscriptText = new SuperscriptText2();
     superscriptText.addChild(argv[1].value);
     return superscriptText;
   }
@@ -2582,6 +2714,12 @@ __decorateClass([
 __decorateClass([
   import_ts_parser_generator3.syntax.GrammarProductionFunction(`WholeMarkdownLine -> WholeMarkdownLine MarkdownLine enter`)
 ], MarkdownLanguageFunctionsEntity.prototype, "WholeMarkdownLine__WholeMarkdownLine_MarkdownLine_enter", 1);
+__decorateClass([
+  import_ts_parser_generator3.syntax.GrammarProductionFunction(`WholeMarkdownLine -> BeginStarItalicText enter`)
+], MarkdownLanguageFunctionsEntity.prototype, "WholeMarkdownLine__BeginStarItalicText_enter", 1);
+__decorateClass([
+  import_ts_parser_generator3.syntax.GrammarProductionFunction(`WholeMarkdownLine -> WholeMarkdownLine BeginStarItalicText enter`)
+], MarkdownLanguageFunctionsEntity.prototype, "WholeMarkdownLine__WholeMarkdownLine_BeginStarItalicText_enter", 1);
 __decorateClass([
   import_ts_parser_generator3.syntax.GrammarProductionFunction(`WholeMarkdownLine -> <ERROR> enter`)
 ], MarkdownLanguageFunctionsEntity.prototype, "WholeMarkdownLine__ERROR_enter", 1);
@@ -3130,12 +3268,15 @@ __decorateClass([
 ], MarkdownLanguageFunctionsEntity.prototype, "passValueFunc", 1);
 
 // src/markdownDefinition.ts
-var definition = { "languageDefinition": "\nMarkdown -> WholeMarkdownLine\n\nWholeMarkdownLine -> MarkdownLine enter\nWholeMarkdownLine -> WholeMarkdownLine MarkdownLine enter\n\nWholeMarkdownLine -> <ERROR> enter\nWholeMarkdownLine -> WholeMarkdownLine <ERROR> enter\n\nWholeMarkdownLine -> enter\nWholeMarkdownLine -> WholeMarkdownLine enter\n\nMarkdownLine -> <ERROR>\n\nMarkdownLine -> fencedCodeBlockTag\n\nTableRow -> verticalBar\nTableRowWithCell -> TableRow Sentence\nTableRowWithCell -> TableRow intent\n\nTableRowWithCell -> TableRowWithCell Sentence\nTableRowWithCell -> TableRowWithCell intent\n\nTableRow -> TableRowWithCell verticalBar\n\nMarkdownLine -> TableRow\n\nTableColumnAlignment -> dashes3WithSpaces\nTableColumnAlignment -> columnLeftAlignment\nTableColumnAlignment -> columnRightAlignment\nTableColumnAlignment -> columnCenterAlignment\n\nTableAlignmentRow -> verticalBar TableColumnAlignment verticalBar\nTableAlignmentRow -> TableAlignmentRow TableColumnAlignment verticalBar\nMarkdownLine -> TableAlignmentRow\n\nTaskListItem -> checkedBox spaces MarkdownLine\nTaskListItem -> uncheckedBox spaces MarkdownLine\nMarkdownLine -> TaskListItem\n\nDefinitionItemValue -> colonSign spaces MarkdownLine\nMarkdownLine -> DefinitionItemValue\n\nFootnote -> FootnoteReference colonSign spaces MarkdownLine\nMarkdownLine -> Footnote\n\nEqualsRule -> equals3\nMarkdownLine -> EqualsRule\n\nDashesRule -> dashes3\nMarkdownLine -> DashesRule\n\nHorizontalRule -> StarBoldItalicTag\nHorizontalRule -> UnderlineBoldItalicTag\nHorizontalRule -> underscores\nHorizontalRule -> asterisks4\nMarkdownLine -> HorizontalRule\n\nBlockquoteLine -> blockquoteBiggerSignLine\nMarkdownLine -> BlockquoteLine\n\nComplement -> intent MarkdownLine\nComplement -> intent\nMarkdownLine -> Complement\n\nHeading -> headingSharpSign MarkdownLine\nHeading -> headingSharpSign\nHeading -> headingSharpSignWithCursor MarkdownLine\nHeading -> headingSharpSignWithCursor\nMarkdownLine -> Heading\n\nOrderedItem -> orderedItemTag Sentence\nOrderedItem -> orderedItemTag\nOrderedItem -> orderedItemTagWithCursor Sentence\nOrderedItem -> orderedItemTagWithCursor\nMarkdownLine -> OrderedItem\n\nUnorderedItem -> unorderedItemTag Sentence\nUnorderedItem -> unorderedItemTag\nUnorderedItem -> unorderedItemTagWithCursor Sentence\nUnorderedItem -> unorderedItemTagWithCursor\nMarkdownLine -> UnorderedItem\n\nSentence -> Match_emphasis\nSentence -> Sentence Match_emphasis\nMarkdownLine -> Sentence\n\nPlainText -> simpleText\nPlainText -> spaces\nPlainText -> Link\nPlainText -> urlAddress\nPlainText -> emailAddress\nPlainText -> Image\nPlainText -> emoji\nPlainText -> FootnoteReference\nPlainText -> cursor\nPlainText -> sharpSign\nPlainText -> leftArrow\nPlainText -> dashSign\nPlainText -> plusSign\nPlainText -> PlainText simpleText\nPlainText -> PlainText spaces\nPlainText -> PlainText Link\nPlainText -> PlainText urlAddress\nPlainText -> PlainText emailAddress\nPlainText -> PlainText Image\nPlainText -> PlainText emoji\nPlainText -> PlainText FootnoteReference\nPlainText -> PlainText intent\nPlainText -> PlainText cursor\nPlainText -> PlainText sharpSign\nPlainText -> PlainText leftArrow\nPlainText -> PlainText dashSign\nPlainText -> PlainText plusSign\n\nFootnoteReference -> openSquareBracketWithCaret simpleText closeSquareBracket\n\nLink -> openSquareBracket Sentence closeSquareBracket openParentheses url closeParentheses\nLink -> openSquareBracket Sentence closeSquareBracket openParentheses url spaces doubleQuotationMarkText closeParentheses\nImage -> exclamationMarkOpenSquareBracket PlainText closeSquareBracket openParentheses url spaces doubleQuotationMarkText closeParentheses\n\n\n\n\n\n\n\n\n\n\n\n\n\nBeginStarBoldText -> starBoldTag NO_StarBoldText_Match_emphasis\nBeginStarBoldText -> BeginStarBoldText NO_StarBoldText_Match_emphasis\nStarBoldText -> BeginStarBoldText starBoldTag\n\nBeginUnderlineBoldText -> underlineBoldTag NO_UnderlineBoldText_Match_emphasis\nBeginUnderlineBoldText -> BeginUnderlineBoldText NO_UnderlineBoldText_Match_emphasis\nUnderlineBoldText -> BeginUnderlineBoldText underlineBoldTag\n\nBeginStarItalicText -> starItalicTag NO_StarItalicText_Match_emphasis\nBeginStarItalicText -> BeginStarItalicText NO_StarItalicText_Match_emphasis\nStarItalicText -> BeginStarItalicText starItalicTag\n\nBeginUnderlineItalicText -> underlineItalicTag NO_UnderlineItalicText_Match_emphasis\nBeginUnderlineItalicText -> BeginUnderlineItalicText NO_UnderlineItalicText_Match_emphasis\nUnderlineItalicText -> BeginUnderlineItalicText underlineItalicTag\n\nBeginStarBoldItalicText -> starBoldItalicTag NO_StarBoldItalicText_Match_emphasis\nBeginStarBoldItalicText -> BeginStarBoldItalicText NO_StarBoldItalicText_Match_emphasis\nStarBoldItalicText -> BeginStarBoldItalicText starBoldItalicTag\n\nBeginUnderlineBoldItalicText -> underlineBoldItalicTag NO_UnderlineBoldItalicText_Match_emphasis\nBeginUnderlineBoldItalicText -> BeginUnderlineBoldItalicText NO_UnderlineBoldItalicText_Match_emphasis\nUnderlineBoldItalicText -> BeginUnderlineBoldItalicText underlineBoldItalicTag\n\nBeginStrikethroughText -> strikethroughTag NO_StrikethroughText_Match_emphasis\nBeginStrikethroughText -> BeginStrikethroughText NO_StrikethroughText_Match_emphasis\nStrikethroughText -> BeginStrikethroughText strikethroughTag\n\nBeginHighlightText -> highlightTag NO_HighlightText_Match_emphasis\nBeginHighlightText -> BeginHighlightText NO_HighlightText_Match_emphasis\nHighlightText -> BeginHighlightText highlightTag\n\nBeginSubscriptText -> subscriptTag NO_SubscriptText_Match_emphasis\nBeginSubscriptText -> BeginSubscriptText NO_SubscriptText_Match_emphasis\nSubscriptText -> BeginSubscriptText subscriptTag\n\nBeginSuperscriptText -> superscriptTag NO_SuperscriptText_Match_emphasis\nBeginSuperscriptText -> BeginSuperscriptText NO_SuperscriptText_Match_emphasis\nSuperscriptText -> BeginSuperscriptText superscriptTag\n\nBeginDoubleBacktickText -> doubleBacktickTag NO_DoubleBacktickText_Match_emphasis\nBeginDoubleBacktickText -> BeginDoubleBacktickText NO_DoubleBacktickText_Match_emphasis\nDoubleBacktickText -> BeginDoubleBacktickText doubleBacktickTag\n\nBeginBacktickText -> backtickTag NO_BacktickText_Match_emphasis\nBeginBacktickText -> BeginBacktickText NO_BacktickText_Match_emphasis\nBacktickText -> BeginBacktickText backtickTag\n\nNO_StarBoldText_Match_emphasis -> PlainText\nNO_StarBoldText_Match_emphasis -> UnderlineBoldText\nNO_StarBoldText_Match_emphasis -> StarItalicText\nNO_StarBoldText_Match_emphasis -> UnderlineItalicText\nNO_StarBoldText_Match_emphasis -> StarBoldItalicText\nNO_StarBoldText_Match_emphasis -> UnderlineBoldItalicText\nNO_StarBoldText_Match_emphasis -> StrikethroughText\nNO_StarBoldText_Match_emphasis -> HighlightText\nNO_StarBoldText_Match_emphasis -> SubscriptText\nNO_StarBoldText_Match_emphasis -> SuperscriptText\nNO_StarBoldText_Match_emphasis -> DoubleBacktickText\nNO_StarBoldText_Match_emphasis -> BacktickText\n\nNO_UnderlineBoldText_Match_emphasis -> PlainText\nNO_UnderlineBoldText_Match_emphasis -> StarBoldText\nNO_UnderlineBoldText_Match_emphasis -> StarItalicText\nNO_UnderlineBoldText_Match_emphasis -> UnderlineItalicText\nNO_UnderlineBoldText_Match_emphasis -> StarBoldItalicText\nNO_UnderlineBoldText_Match_emphasis -> UnderlineBoldItalicText\nNO_UnderlineBoldText_Match_emphasis -> StrikethroughText\nNO_UnderlineBoldText_Match_emphasis -> HighlightText\nNO_UnderlineBoldText_Match_emphasis -> SubscriptText\nNO_UnderlineBoldText_Match_emphasis -> SuperscriptText\nNO_UnderlineBoldText_Match_emphasis -> DoubleBacktickText\nNO_UnderlineBoldText_Match_emphasis -> BacktickText\n\nNO_StarItalicText_Match_emphasis -> PlainText\nNO_StarItalicText_Match_emphasis -> StarBoldText\nNO_StarItalicText_Match_emphasis -> UnderlineBoldText\nNO_StarItalicText_Match_emphasis -> UnderlineItalicText\nNO_StarItalicText_Match_emphasis -> StarBoldItalicText\nNO_StarItalicText_Match_emphasis -> UnderlineBoldItalicText\nNO_StarItalicText_Match_emphasis -> StrikethroughText\nNO_StarItalicText_Match_emphasis -> HighlightText\nNO_StarItalicText_Match_emphasis -> SubscriptText\nNO_StarItalicText_Match_emphasis -> SuperscriptText\nNO_StarItalicText_Match_emphasis -> DoubleBacktickText\nNO_StarItalicText_Match_emphasis -> BacktickText\n\nNO_UnderlineItalicText_Match_emphasis -> PlainText\nNO_UnderlineItalicText_Match_emphasis -> StarBoldText\nNO_UnderlineItalicText_Match_emphasis -> UnderlineBoldText\nNO_UnderlineItalicText_Match_emphasis -> StarItalicText\nNO_UnderlineItalicText_Match_emphasis -> StarBoldItalicText\nNO_UnderlineItalicText_Match_emphasis -> UnderlineBoldItalicText\nNO_UnderlineItalicText_Match_emphasis -> StrikethroughText\nNO_UnderlineItalicText_Match_emphasis -> HighlightText\nNO_UnderlineItalicText_Match_emphasis -> SubscriptText\nNO_UnderlineItalicText_Match_emphasis -> SuperscriptText\nNO_UnderlineItalicText_Match_emphasis -> DoubleBacktickText\nNO_UnderlineItalicText_Match_emphasis -> BacktickText\n\nNO_StarBoldItalicText_Match_emphasis -> PlainText\nNO_StarBoldItalicText_Match_emphasis -> StarBoldText\nNO_StarBoldItalicText_Match_emphasis -> UnderlineBoldText\nNO_StarBoldItalicText_Match_emphasis -> StarItalicText\nNO_StarBoldItalicText_Match_emphasis -> UnderlineItalicText\nNO_StarBoldItalicText_Match_emphasis -> UnderlineBoldItalicText\nNO_StarBoldItalicText_Match_emphasis -> StrikethroughText\nNO_StarBoldItalicText_Match_emphasis -> HighlightText\nNO_StarBoldItalicText_Match_emphasis -> SubscriptText\nNO_StarBoldItalicText_Match_emphasis -> SuperscriptText\nNO_StarBoldItalicText_Match_emphasis -> DoubleBacktickText\nNO_StarBoldItalicText_Match_emphasis -> BacktickText\n\nNO_UnderlineBoldItalicText_Match_emphasis -> PlainText\nNO_UnderlineBoldItalicText_Match_emphasis -> StarBoldText\nNO_UnderlineBoldItalicText_Match_emphasis -> UnderlineBoldText\nNO_UnderlineBoldItalicText_Match_emphasis -> StarItalicText\nNO_UnderlineBoldItalicText_Match_emphasis -> UnderlineItalicText\nNO_UnderlineBoldItalicText_Match_emphasis -> StarBoldItalicText\nNO_UnderlineBoldItalicText_Match_emphasis -> StrikethroughText\nNO_UnderlineBoldItalicText_Match_emphasis -> HighlightText\nNO_UnderlineBoldItalicText_Match_emphasis -> SubscriptText\nNO_UnderlineBoldItalicText_Match_emphasis -> SuperscriptText\nNO_UnderlineBoldItalicText_Match_emphasis -> DoubleBacktickText\nNO_UnderlineBoldItalicText_Match_emphasis -> BacktickText\n\nNO_StrikethroughText_Match_emphasis -> PlainText\nNO_StrikethroughText_Match_emphasis -> StarBoldText\nNO_StrikethroughText_Match_emphasis -> UnderlineBoldText\nNO_StrikethroughText_Match_emphasis -> StarItalicText\nNO_StrikethroughText_Match_emphasis -> UnderlineItalicText\nNO_StrikethroughText_Match_emphasis -> StarBoldItalicText\nNO_StrikethroughText_Match_emphasis -> UnderlineBoldItalicText\nNO_StrikethroughText_Match_emphasis -> HighlightText\nNO_StrikethroughText_Match_emphasis -> SubscriptText\nNO_StrikethroughText_Match_emphasis -> SuperscriptText\nNO_StrikethroughText_Match_emphasis -> DoubleBacktickText\nNO_StrikethroughText_Match_emphasis -> BacktickText\n\nNO_HighlightText_Match_emphasis -> PlainText\nNO_HighlightText_Match_emphasis -> StarBoldText\nNO_HighlightText_Match_emphasis -> UnderlineBoldText\nNO_HighlightText_Match_emphasis -> StarItalicText\nNO_HighlightText_Match_emphasis -> UnderlineItalicText\nNO_HighlightText_Match_emphasis -> StarBoldItalicText\nNO_HighlightText_Match_emphasis -> UnderlineBoldItalicText\nNO_HighlightText_Match_emphasis -> StrikethroughText\nNO_HighlightText_Match_emphasis -> SubscriptText\nNO_HighlightText_Match_emphasis -> SuperscriptText\nNO_HighlightText_Match_emphasis -> DoubleBacktickText\nNO_HighlightText_Match_emphasis -> BacktickText\n\nNO_SubscriptText_Match_emphasis -> PlainText\nNO_SubscriptText_Match_emphasis -> StarBoldText\nNO_SubscriptText_Match_emphasis -> UnderlineBoldText\nNO_SubscriptText_Match_emphasis -> StarItalicText\nNO_SubscriptText_Match_emphasis -> UnderlineItalicText\nNO_SubscriptText_Match_emphasis -> StarBoldItalicText\nNO_SubscriptText_Match_emphasis -> UnderlineBoldItalicText\nNO_SubscriptText_Match_emphasis -> StrikethroughText\nNO_SubscriptText_Match_emphasis -> HighlightText\nNO_SubscriptText_Match_emphasis -> SuperscriptText\nNO_SubscriptText_Match_emphasis -> DoubleBacktickText\nNO_SubscriptText_Match_emphasis -> BacktickText\n\nNO_SuperscriptText_Match_emphasis -> PlainText\nNO_SuperscriptText_Match_emphasis -> StarBoldText\nNO_SuperscriptText_Match_emphasis -> UnderlineBoldText\nNO_SuperscriptText_Match_emphasis -> StarItalicText\nNO_SuperscriptText_Match_emphasis -> UnderlineItalicText\nNO_SuperscriptText_Match_emphasis -> StarBoldItalicText\nNO_SuperscriptText_Match_emphasis -> UnderlineBoldItalicText\nNO_SuperscriptText_Match_emphasis -> StrikethroughText\nNO_SuperscriptText_Match_emphasis -> HighlightText\nNO_SuperscriptText_Match_emphasis -> SubscriptText\nNO_SuperscriptText_Match_emphasis -> DoubleBacktickText\nNO_SuperscriptText_Match_emphasis -> BacktickText\n\nNO_DoubleBacktickText_Match_emphasis -> PlainText\nNO_DoubleBacktickText_Match_emphasis -> StarBoldText\nNO_DoubleBacktickText_Match_emphasis -> UnderlineBoldText\nNO_DoubleBacktickText_Match_emphasis -> StarItalicText\nNO_DoubleBacktickText_Match_emphasis -> UnderlineItalicText\nNO_DoubleBacktickText_Match_emphasis -> StarBoldItalicText\nNO_DoubleBacktickText_Match_emphasis -> UnderlineBoldItalicText\nNO_DoubleBacktickText_Match_emphasis -> StrikethroughText\nNO_DoubleBacktickText_Match_emphasis -> HighlightText\nNO_DoubleBacktickText_Match_emphasis -> SubscriptText\nNO_DoubleBacktickText_Match_emphasis -> SuperscriptText\nNO_DoubleBacktickText_Match_emphasis -> BacktickText\n\nNO_BacktickText_Match_emphasis -> PlainText\nNO_BacktickText_Match_emphasis -> StarBoldText\nNO_BacktickText_Match_emphasis -> UnderlineBoldText\nNO_BacktickText_Match_emphasis -> StarItalicText\nNO_BacktickText_Match_emphasis -> UnderlineItalicText\nNO_BacktickText_Match_emphasis -> StarBoldItalicText\nNO_BacktickText_Match_emphasis -> UnderlineBoldItalicText\nNO_BacktickText_Match_emphasis -> StrikethroughText\nNO_BacktickText_Match_emphasis -> HighlightText\nNO_BacktickText_Match_emphasis -> SubscriptText\nNO_BacktickText_Match_emphasis -> SuperscriptText\nNO_BacktickText_Match_emphasis -> DoubleBacktickText\n\nMatch_emphasis -> PlainText\nMatch_emphasis -> StarBoldText\nMatch_emphasis -> UnderlineBoldText\nMatch_emphasis -> StarItalicText\nMatch_emphasis -> UnderlineItalicText\nMatch_emphasis -> StarBoldItalicText\nMatch_emphasis -> UnderlineBoldItalicText\nMatch_emphasis -> StrikethroughText\nMatch_emphasis -> HighlightText\nMatch_emphasis -> SubscriptText\nMatch_emphasis -> SuperscriptText\nMatch_emphasis -> DoubleBacktickText\nMatch_emphasis -> BacktickText\n//abc", "tokenTypeDefinition": '\nenter \\n\nintent "    "+\nspaces [\\t ]+\nsimpleText  [^\u25AE*_=\\-\\+\\>\\#\\`\\:\\/\\"\\(\\)\\[\\]\\!\\^\\: \\t\\n\\|]+\n\nemoji ":"[^\u25AE\\:\\n]+":"\nurl ([^\\!\\<\\>\\[\\]\\(\\) \\n\\t]+\\:\\/)?\\/[^\\!\\<\\>\\[\\]\\(\\) \\n\\t]+\nurlAddress "<"[^\\!\\<\\>\\[\\]\\(\\) \\n\\t]+\\:\\/\\/[^\\!\\<\\>\\[\\]\\(\\) \\n\\t]+">"\nemailAddress "<"[^\\!\\<\\>\\[\\]\\(\\) \\n\\t]+"@"[^\\!\\<\\>\\[\\]\\(\\) \\n\\t]+">"\ndoubleQuotationMarkText \\"[^\\"\\n]*\\"\nunorderedItemTag [\\-\\+]" "\nunorderedItemTagWithCursor (\u25AE[\\-\\+]|[\\-\\+]\u25AE)" "\norderedItemTag [0-9]+\\." "\norderedItemTagWithCursor (\u25AE[0-9]+\\.|[0-9]+\u25AE[0-9]*\\.|[0-9]+\\.\u25AE)" "\n\ncursor "\u25AE"\nverticalBar ("|")|("\u25AE|")|("|\u25AE")\nopenParentheses "("\ncloseParentheses ")"\nopenSquareBracket "["\ncloseSquareBracket "]"\nexclamationMarkOpenSquareBracket "!["\nopenSquareBracketWithCaret "[^"\n\nasterisks4 "*"{4,}\ndashes3 "-"{3,}\nequals3 "="{3,}\nunderscores "_"{4,}\n\ndashes3WithSpaces [\\t ]*"-"{3,}[\\t ]*\ncolumnLeftAlignment [\\t ]*:"-"{3,}[\\t ]*\ncolumnRightAlignment [\\t ]*"-"{3,}:[\\t ]*\ncolumnCenterAlignment [\\t ]*:"-"{3,}:[\\t ]*\n\n\nblockquoteBiggerSignLine (>+|>+\u25AE|\u25AE>+|>+\u25AE>+)" "[^\\n]*\nleftArrow >+\n\nheadingSharpSign #+" "\nheadingSharpSignWithCursor (#+\u25AE|\u25AE#+|#+\u25AE#+)" "\nsharpSign #+\n\ncolonSign ":"\ndashSign "-"\nplusSign "+"\ncheckedBox "- [x]"\nuncheckedBox "- [ ]"\n\nstarBoldTag "**"\nunderlineBoldTag "__"\nstarItalicTag "*"\nunderlineItalicTag "_"\nstarBoldItalicTag "***"\nunderlineBoldItalicTag "___"\nstrikethroughTag "~~"\nhighlightTag "=="\nsubscriptTag "~"\nsuperscriptTag "^"\ndoubleBacktickTag "``"\nbacktickTag "`"\nfencedCodeBlockTag ("```"[^\\n]*\\n[^\\`]*"```")|("```"[^\\n]*\\n[^\\`]+\\n[^\\`]*"```")\n\n\n' };
+var definition = { "languageDefinition": "\nMarkdown -> WholeMarkdownLine\n\nWholeMarkdownLine -> MarkdownLine enter\nWholeMarkdownLine -> WholeMarkdownLine MarkdownLine enter\n\nWholeMarkdownLine -> BeginStarItalicText enter\nWholeMarkdownLine -> WholeMarkdownLine BeginStarItalicText enter\n\nWholeMarkdownLine -> <ERROR> enter\nWholeMarkdownLine -> WholeMarkdownLine <ERROR> enter\n\nWholeMarkdownLine -> enter\nWholeMarkdownLine -> WholeMarkdownLine enter\n\nMarkdownLine -> <ERROR>\n\nMarkdownLine -> fencedCodeBlockTag\n\nTableRow -> verticalBar\nTableRowWithCell -> TableRow Sentence\nTableRowWithCell -> TableRow intent\n\nTableRowWithCell -> TableRowWithCell Sentence\nTableRowWithCell -> TableRowWithCell intent\n\nTableRow -> TableRowWithCell verticalBar\n\nMarkdownLine -> TableRow\n\nTableColumnAlignment -> dashes3WithSpaces\nTableColumnAlignment -> columnLeftAlignment\nTableColumnAlignment -> columnRightAlignment\nTableColumnAlignment -> columnCenterAlignment\n\nTableAlignmentRow -> verticalBar TableColumnAlignment verticalBar\nTableAlignmentRow -> TableAlignmentRow TableColumnAlignment verticalBar\nMarkdownLine -> TableAlignmentRow\n\nTaskListItem -> checkedBox spaces MarkdownLine\nTaskListItem -> uncheckedBox spaces MarkdownLine\nMarkdownLine -> TaskListItem\n\nDefinitionItemValue -> colonSign spaces MarkdownLine\nMarkdownLine -> DefinitionItemValue\n\nFootnote -> FootnoteReference colonSign spaces MarkdownLine\nMarkdownLine -> Footnote\n\nEqualsRule -> equals3\nMarkdownLine -> EqualsRule\n\nDashesRule -> dashes3\nMarkdownLine -> DashesRule\n\nHorizontalRule -> StarBoldItalicTag\nHorizontalRule -> UnderlineBoldItalicTag\nHorizontalRule -> underscores\nHorizontalRule -> asterisks4\nMarkdownLine -> HorizontalRule\n\nBlockquoteLine -> blockquoteBiggerSignLine\nMarkdownLine -> BlockquoteLine\n\nComplement -> intent MarkdownLine\nComplement -> intent\nMarkdownLine -> Complement\n\nHeading -> headingSharpSign MarkdownLine\nHeading -> headingSharpSign\nHeading -> headingSharpSignWithCursor MarkdownLine\nHeading -> headingSharpSignWithCursor\nMarkdownLine -> Heading\n\nOrderedItem -> orderedItemTag Sentence\nOrderedItem -> orderedItemTag\nOrderedItem -> orderedItemTagWithCursor Sentence\nOrderedItem -> orderedItemTagWithCursor\nMarkdownLine -> OrderedItem\n\nUnorderedItem -> unorderedItemTag Sentence\nUnorderedItem -> unorderedItemTag\nUnorderedItem -> unorderedItemTagWithCursor Sentence\nUnorderedItem -> unorderedItemTagWithCursor\nMarkdownLine -> UnorderedItem\n\nSentence -> Match_emphasis\nSentence -> Sentence Match_emphasis\nMarkdownLine -> Sentence\n\nPlainText -> simpleText\nPlainText -> spaces\nPlainText -> Link\nPlainText -> urlAddress\nPlainText -> emailAddress\nPlainText -> Image\nPlainText -> emoji\nPlainText -> FootnoteReference\nPlainText -> cursor\nPlainText -> sharpSign\nPlainText -> leftArrow\nPlainText -> dashSign\nPlainText -> plusSign\nPlainText -> PlainText simpleText\nPlainText -> PlainText spaces\nPlainText -> PlainText Link\nPlainText -> PlainText urlAddress\nPlainText -> PlainText emailAddress\nPlainText -> PlainText Image\nPlainText -> PlainText emoji\nPlainText -> PlainText FootnoteReference\nPlainText -> PlainText intent\nPlainText -> PlainText cursor\nPlainText -> PlainText sharpSign\nPlainText -> PlainText leftArrow\nPlainText -> PlainText dashSign\nPlainText -> PlainText plusSign\n\nFootnoteReference -> openSquareBracketWithCaret simpleText closeSquareBracket\n\nLink -> openSquareBracket Sentence closeSquareBracket openParentheses url closeParentheses\nLink -> openSquareBracket Sentence closeSquareBracket openParentheses url spaces doubleQuotationMarkText closeParentheses\nImage -> exclamationMarkOpenSquareBracket PlainText closeSquareBracket openParentheses url spaces doubleQuotationMarkText closeParentheses\n\n\n\n\n\n\n\n\n\n\n\n\n\nBeginStarBoldText -> starBoldTag NO_StarBoldText_Match_emphasis\nBeginStarBoldText -> BeginStarBoldText NO_StarBoldText_Match_emphasis\nStarBoldText -> BeginStarBoldText starBoldTag\n\nBeginUnderlineBoldText -> underlineBoldTag NO_UnderlineBoldText_Match_emphasis\nBeginUnderlineBoldText -> BeginUnderlineBoldText NO_UnderlineBoldText_Match_emphasis\nUnderlineBoldText -> BeginUnderlineBoldText underlineBoldTag\n\nBeginStarItalicText -> starItalicTag NO_StarItalicText_Match_emphasis\nBeginStarItalicText -> BeginStarItalicText NO_StarItalicText_Match_emphasis\nStarItalicText -> BeginStarItalicText starItalicTag\n\nBeginUnderlineItalicText -> underlineItalicTag NO_UnderlineItalicText_Match_emphasis\nBeginUnderlineItalicText -> BeginUnderlineItalicText NO_UnderlineItalicText_Match_emphasis\nUnderlineItalicText -> BeginUnderlineItalicText underlineItalicTag\n\nBeginStarBoldItalicText -> starBoldItalicTag NO_StarBoldItalicText_Match_emphasis\nBeginStarBoldItalicText -> BeginStarBoldItalicText NO_StarBoldItalicText_Match_emphasis\nStarBoldItalicText -> BeginStarBoldItalicText starBoldItalicTag\n\nBeginUnderlineBoldItalicText -> underlineBoldItalicTag NO_UnderlineBoldItalicText_Match_emphasis\nBeginUnderlineBoldItalicText -> BeginUnderlineBoldItalicText NO_UnderlineBoldItalicText_Match_emphasis\nUnderlineBoldItalicText -> BeginUnderlineBoldItalicText underlineBoldItalicTag\n\nBeginStrikethroughText -> strikethroughTag NO_StrikethroughText_Match_emphasis\nBeginStrikethroughText -> BeginStrikethroughText NO_StrikethroughText_Match_emphasis\nStrikethroughText -> BeginStrikethroughText strikethroughTag\n\nBeginHighlightText -> highlightTag NO_HighlightText_Match_emphasis\nBeginHighlightText -> BeginHighlightText NO_HighlightText_Match_emphasis\nHighlightText -> BeginHighlightText highlightTag\n\nBeginSubscriptText -> subscriptTag NO_SubscriptText_Match_emphasis\nBeginSubscriptText -> BeginSubscriptText NO_SubscriptText_Match_emphasis\nSubscriptText -> BeginSubscriptText subscriptTag\n\nBeginSuperscriptText -> superscriptTag NO_SuperscriptText_Match_emphasis\nBeginSuperscriptText -> BeginSuperscriptText NO_SuperscriptText_Match_emphasis\nSuperscriptText -> BeginSuperscriptText superscriptTag\n\nBeginDoubleBacktickText -> doubleBacktickTag NO_DoubleBacktickText_Match_emphasis\nBeginDoubleBacktickText -> BeginDoubleBacktickText NO_DoubleBacktickText_Match_emphasis\nDoubleBacktickText -> BeginDoubleBacktickText doubleBacktickTag\n\nBeginBacktickText -> backtickTag NO_BacktickText_Match_emphasis\nBeginBacktickText -> BeginBacktickText NO_BacktickText_Match_emphasis\nBacktickText -> BeginBacktickText backtickTag\n\nNO_StarBoldText_Match_emphasis -> PlainText\nNO_StarBoldText_Match_emphasis -> UnderlineBoldText\nNO_StarBoldText_Match_emphasis -> StarItalicText\nNO_StarBoldText_Match_emphasis -> UnderlineItalicText\nNO_StarBoldText_Match_emphasis -> StarBoldItalicText\nNO_StarBoldText_Match_emphasis -> UnderlineBoldItalicText\nNO_StarBoldText_Match_emphasis -> StrikethroughText\nNO_StarBoldText_Match_emphasis -> HighlightText\nNO_StarBoldText_Match_emphasis -> SubscriptText\nNO_StarBoldText_Match_emphasis -> SuperscriptText\nNO_StarBoldText_Match_emphasis -> DoubleBacktickText\nNO_StarBoldText_Match_emphasis -> BacktickText\n\nNO_UnderlineBoldText_Match_emphasis -> PlainText\nNO_UnderlineBoldText_Match_emphasis -> StarBoldText\nNO_UnderlineBoldText_Match_emphasis -> StarItalicText\nNO_UnderlineBoldText_Match_emphasis -> UnderlineItalicText\nNO_UnderlineBoldText_Match_emphasis -> StarBoldItalicText\nNO_UnderlineBoldText_Match_emphasis -> UnderlineBoldItalicText\nNO_UnderlineBoldText_Match_emphasis -> StrikethroughText\nNO_UnderlineBoldText_Match_emphasis -> HighlightText\nNO_UnderlineBoldText_Match_emphasis -> SubscriptText\nNO_UnderlineBoldText_Match_emphasis -> SuperscriptText\nNO_UnderlineBoldText_Match_emphasis -> DoubleBacktickText\nNO_UnderlineBoldText_Match_emphasis -> BacktickText\n\nNO_StarItalicText_Match_emphasis -> PlainText\nNO_StarItalicText_Match_emphasis -> StarBoldText\nNO_StarItalicText_Match_emphasis -> UnderlineBoldText\nNO_StarItalicText_Match_emphasis -> UnderlineItalicText\nNO_StarItalicText_Match_emphasis -> StarBoldItalicText\nNO_StarItalicText_Match_emphasis -> UnderlineBoldItalicText\nNO_StarItalicText_Match_emphasis -> StrikethroughText\nNO_StarItalicText_Match_emphasis -> HighlightText\nNO_StarItalicText_Match_emphasis -> SubscriptText\nNO_StarItalicText_Match_emphasis -> SuperscriptText\nNO_StarItalicText_Match_emphasis -> DoubleBacktickText\nNO_StarItalicText_Match_emphasis -> BacktickText\n\nNO_UnderlineItalicText_Match_emphasis -> PlainText\nNO_UnderlineItalicText_Match_emphasis -> StarBoldText\nNO_UnderlineItalicText_Match_emphasis -> UnderlineBoldText\nNO_UnderlineItalicText_Match_emphasis -> StarItalicText\nNO_UnderlineItalicText_Match_emphasis -> StarBoldItalicText\nNO_UnderlineItalicText_Match_emphasis -> UnderlineBoldItalicText\nNO_UnderlineItalicText_Match_emphasis -> StrikethroughText\nNO_UnderlineItalicText_Match_emphasis -> HighlightText\nNO_UnderlineItalicText_Match_emphasis -> SubscriptText\nNO_UnderlineItalicText_Match_emphasis -> SuperscriptText\nNO_UnderlineItalicText_Match_emphasis -> DoubleBacktickText\nNO_UnderlineItalicText_Match_emphasis -> BacktickText\n\nNO_StarBoldItalicText_Match_emphasis -> PlainText\nNO_StarBoldItalicText_Match_emphasis -> StarBoldText\nNO_StarBoldItalicText_Match_emphasis -> UnderlineBoldText\nNO_StarBoldItalicText_Match_emphasis -> StarItalicText\nNO_StarBoldItalicText_Match_emphasis -> UnderlineItalicText\nNO_StarBoldItalicText_Match_emphasis -> UnderlineBoldItalicText\nNO_StarBoldItalicText_Match_emphasis -> StrikethroughText\nNO_StarBoldItalicText_Match_emphasis -> HighlightText\nNO_StarBoldItalicText_Match_emphasis -> SubscriptText\nNO_StarBoldItalicText_Match_emphasis -> SuperscriptText\nNO_StarBoldItalicText_Match_emphasis -> DoubleBacktickText\nNO_StarBoldItalicText_Match_emphasis -> BacktickText\n\nNO_UnderlineBoldItalicText_Match_emphasis -> PlainText\nNO_UnderlineBoldItalicText_Match_emphasis -> StarBoldText\nNO_UnderlineBoldItalicText_Match_emphasis -> UnderlineBoldText\nNO_UnderlineBoldItalicText_Match_emphasis -> StarItalicText\nNO_UnderlineBoldItalicText_Match_emphasis -> UnderlineItalicText\nNO_UnderlineBoldItalicText_Match_emphasis -> StarBoldItalicText\nNO_UnderlineBoldItalicText_Match_emphasis -> StrikethroughText\nNO_UnderlineBoldItalicText_Match_emphasis -> HighlightText\nNO_UnderlineBoldItalicText_Match_emphasis -> SubscriptText\nNO_UnderlineBoldItalicText_Match_emphasis -> SuperscriptText\nNO_UnderlineBoldItalicText_Match_emphasis -> DoubleBacktickText\nNO_UnderlineBoldItalicText_Match_emphasis -> BacktickText\n\nNO_StrikethroughText_Match_emphasis -> PlainText\nNO_StrikethroughText_Match_emphasis -> StarBoldText\nNO_StrikethroughText_Match_emphasis -> UnderlineBoldText\nNO_StrikethroughText_Match_emphasis -> StarItalicText\nNO_StrikethroughText_Match_emphasis -> UnderlineItalicText\nNO_StrikethroughText_Match_emphasis -> StarBoldItalicText\nNO_StrikethroughText_Match_emphasis -> UnderlineBoldItalicText\nNO_StrikethroughText_Match_emphasis -> HighlightText\nNO_StrikethroughText_Match_emphasis -> SubscriptText\nNO_StrikethroughText_Match_emphasis -> SuperscriptText\nNO_StrikethroughText_Match_emphasis -> DoubleBacktickText\nNO_StrikethroughText_Match_emphasis -> BacktickText\n\nNO_HighlightText_Match_emphasis -> PlainText\nNO_HighlightText_Match_emphasis -> StarBoldText\nNO_HighlightText_Match_emphasis -> UnderlineBoldText\nNO_HighlightText_Match_emphasis -> StarItalicText\nNO_HighlightText_Match_emphasis -> UnderlineItalicText\nNO_HighlightText_Match_emphasis -> StarBoldItalicText\nNO_HighlightText_Match_emphasis -> UnderlineBoldItalicText\nNO_HighlightText_Match_emphasis -> StrikethroughText\nNO_HighlightText_Match_emphasis -> SubscriptText\nNO_HighlightText_Match_emphasis -> SuperscriptText\nNO_HighlightText_Match_emphasis -> DoubleBacktickText\nNO_HighlightText_Match_emphasis -> BacktickText\n\nNO_SubscriptText_Match_emphasis -> PlainText\nNO_SubscriptText_Match_emphasis -> StarBoldText\nNO_SubscriptText_Match_emphasis -> UnderlineBoldText\nNO_SubscriptText_Match_emphasis -> StarItalicText\nNO_SubscriptText_Match_emphasis -> UnderlineItalicText\nNO_SubscriptText_Match_emphasis -> StarBoldItalicText\nNO_SubscriptText_Match_emphasis -> UnderlineBoldItalicText\nNO_SubscriptText_Match_emphasis -> StrikethroughText\nNO_SubscriptText_Match_emphasis -> HighlightText\nNO_SubscriptText_Match_emphasis -> SuperscriptText\nNO_SubscriptText_Match_emphasis -> DoubleBacktickText\nNO_SubscriptText_Match_emphasis -> BacktickText\n\nNO_SuperscriptText_Match_emphasis -> PlainText\nNO_SuperscriptText_Match_emphasis -> StarBoldText\nNO_SuperscriptText_Match_emphasis -> UnderlineBoldText\nNO_SuperscriptText_Match_emphasis -> StarItalicText\nNO_SuperscriptText_Match_emphasis -> UnderlineItalicText\nNO_SuperscriptText_Match_emphasis -> StarBoldItalicText\nNO_SuperscriptText_Match_emphasis -> UnderlineBoldItalicText\nNO_SuperscriptText_Match_emphasis -> StrikethroughText\nNO_SuperscriptText_Match_emphasis -> HighlightText\nNO_SuperscriptText_Match_emphasis -> SubscriptText\nNO_SuperscriptText_Match_emphasis -> DoubleBacktickText\nNO_SuperscriptText_Match_emphasis -> BacktickText\n\nNO_DoubleBacktickText_Match_emphasis -> PlainText\nNO_DoubleBacktickText_Match_emphasis -> StarBoldText\nNO_DoubleBacktickText_Match_emphasis -> UnderlineBoldText\nNO_DoubleBacktickText_Match_emphasis -> StarItalicText\nNO_DoubleBacktickText_Match_emphasis -> UnderlineItalicText\nNO_DoubleBacktickText_Match_emphasis -> StarBoldItalicText\nNO_DoubleBacktickText_Match_emphasis -> UnderlineBoldItalicText\nNO_DoubleBacktickText_Match_emphasis -> StrikethroughText\nNO_DoubleBacktickText_Match_emphasis -> HighlightText\nNO_DoubleBacktickText_Match_emphasis -> SubscriptText\nNO_DoubleBacktickText_Match_emphasis -> SuperscriptText\nNO_DoubleBacktickText_Match_emphasis -> BacktickText\n\nNO_BacktickText_Match_emphasis -> PlainText\nNO_BacktickText_Match_emphasis -> StarBoldText\nNO_BacktickText_Match_emphasis -> UnderlineBoldText\nNO_BacktickText_Match_emphasis -> StarItalicText\nNO_BacktickText_Match_emphasis -> UnderlineItalicText\nNO_BacktickText_Match_emphasis -> StarBoldItalicText\nNO_BacktickText_Match_emphasis -> UnderlineBoldItalicText\nNO_BacktickText_Match_emphasis -> StrikethroughText\nNO_BacktickText_Match_emphasis -> HighlightText\nNO_BacktickText_Match_emphasis -> SubscriptText\nNO_BacktickText_Match_emphasis -> SuperscriptText\nNO_BacktickText_Match_emphasis -> DoubleBacktickText\n\nMatch_emphasis -> PlainText\nMatch_emphasis -> StarBoldText\nMatch_emphasis -> UnderlineBoldText\nMatch_emphasis -> StarItalicText\nMatch_emphasis -> UnderlineItalicText\nMatch_emphasis -> StarBoldItalicText\nMatch_emphasis -> UnderlineBoldItalicText\nMatch_emphasis -> StrikethroughText\nMatch_emphasis -> HighlightText\nMatch_emphasis -> SubscriptText\nMatch_emphasis -> SuperscriptText\nMatch_emphasis -> DoubleBacktickText\nMatch_emphasis -> BacktickText\n//abc", "tokenTypeDefinition": '\nenter \\n\nintent "    "+\nspaces [\\t ]+\nsimpleText  [^\u25AE*_=\\~\\-\\+\\>\\#\\`\\:\\/\\"\\(\\)\\[\\]\\!\\^\\: \\t\\n\\|]+\n\nemoji ":"[^\u25AE\\:\\n]+":"\nurl ([^\\!\\<\\>\\[\\]\\(\\) \\n\\t]+\\:\\/)?\\/[^\\!\\<\\>\\[\\]\\(\\) \\n\\t]+\nurlAddress "<"[^\\!\\<\\>\\[\\]\\(\\) \\n\\t]+\\:\\/\\/[^\\!\\<\\>\\[\\]\\(\\) \\n\\t]+">"\nemailAddress "<"[^\\!\\<\\>\\[\\]\\(\\) \\n\\t]+"@"[^\\!\\<\\>\\[\\]\\(\\) \\n\\t]+">"\ndoubleQuotationMarkText \\"[^\\"\\n]*\\"\nunorderedItemTag [\\-\\+]" "\nunorderedItemTagWithCursor (\u25AE[\\-\\+]|[\\-\\+]\u25AE)" "\norderedItemTag [0-9]+\\." "\norderedItemTagWithCursor (\u25AE[0-9]+\\.|[0-9]+\u25AE[0-9]*\\.|[0-9]+\\.\u25AE)" "\n\ncursor "\u25AE"\nverticalBar ("|")|("\u25AE|")|("|\u25AE")\nopenParentheses "("\ncloseParentheses ")"\nopenSquareBracket "["\ncloseSquareBracket "]"\nexclamationMarkOpenSquareBracket "!["\nopenSquareBracketWithCaret "[^"\n\nasterisks4 "*"{4,}\ndashes3 "-"{3,}\nequals3 "="{3,}\nunderscores "_"{4,}\n\ndashes3WithSpaces [\\t ]*"-"{3,}[\\t ]*\ncolumnLeftAlignment [\\t ]*:"-"{3,}[\\t ]*\ncolumnRightAlignment [\\t ]*"-"{3,}:[\\t ]*\ncolumnCenterAlignment [\\t ]*:"-"{3,}:[\\t ]*\n\n\nblockquoteBiggerSignLine (>+|>+\u25AE|\u25AE>+|>+\u25AE>+)" "[^\\n]*\nleftArrow >+\n\nheadingSharpSign #+" "\nheadingSharpSignWithCursor (#+\u25AE|\u25AE#+|#+\u25AE#+)" "\nsharpSign #+\n\ncolonSign ":"\ndashSign "-"\nplusSign "+"\ncheckedBox "- [x]"\nuncheckedBox "- [ ]"\n\nstarBoldTag "**"\nunderlineBoldTag "__"\nstarItalicTag "*"\nunderlineItalicTag "_"\nstarBoldItalicTag "***"\nunderlineBoldItalicTag "___"\nstrikethroughTag "~~"\nhighlightTag "=="\nsubscriptTag "~"\nsuperscriptTag "^"\ndoubleBacktickTag "``"\nbacktickTag "`"\nfencedCodeBlockTag ("```"[^\\n]*\\n[^\\`]*"```")|("```"[^\\n]*\\n[^\\`]+\\n[^\\`]*"```")\n\n\n' };
 
 // src/MarkdownSyntaxAnalyzer.ts
 var MarkdownSyntaxAnalyzer = class {
   init() {
-    this.lrSyntaxAnalyzerRunner = new import_ts_parser_generator4.lr.LRSyntaxAnalyzerRunner().init(definition.languageDefinition, definition.tokenTypeDefinition, MarkdownLanguageFunctionsEntity);
+    return this.initWithDefinition(definition.languageDefinition, definition.tokenTypeDefinition);
+  }
+  initWithDefinition(languageDefinition, tokenTypeDefinition) {
+    this.lrSyntaxAnalyzerRunner = new import_ts_parser_generator4.lr.LRSyntaxAnalyzerRunner().init(languageDefinition, tokenTypeDefinition, MarkdownLanguageFunctionsEntity);
     this.lrSyntaxAnalyzerRunner.setPreprocessing((v) => {
       if (v.at(-1) != "\n")
         return v + "\n";

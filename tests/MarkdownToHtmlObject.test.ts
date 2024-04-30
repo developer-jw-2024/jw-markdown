@@ -218,6 +218,35 @@ You go home`
         expect(htmlElement).toEqual(rootElement)
     })
 
+    test('markdown - 2-1-1', () => {
+        var markdown : Markdown = markdownSyntaxAnalyzer.toMarkddown(
+`This ~~is~~ abc`
+        )
+
+        var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
+        var rootElement : html.HtmlElement = new html.HtmlRoot().initChildren([
+            new html.Paragraph().initChildren([
+                new html.Sentence().initChildren([
+                    new html.PlainText().initChildren([
+                        new html.Text('This'),
+                        new html.Spaces(' '),
+                    ]),
+                    new html.StrikethroughText().initChildren([
+                        new html.PlainText().initChildren([
+                            new html.Text('is')
+                        ])
+                    ]),
+                    new html.PlainText().initChildren([
+                        new html.Spaces(' '),
+                        new html.Text('abc')
+                    ])
+                ])
+            ])
+        ])
+
+        expect(htmlElement).toEqual(rootElement)
+    })
+
     test('markdown - 2-1', () => {
         var markdown : Markdown = markdownSyntaxAnalyzer.toMarkddown(
 `This **is** abc`

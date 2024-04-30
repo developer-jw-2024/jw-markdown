@@ -2299,5 +2299,84 @@ Second Term
 </ul>`
         )
     })
+
+
+    test('markdown - inputing-44', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`* One
+* Two
+* Three`
+        )
+
+        expect(html).toEqual(
+`<ul>
+    <li>One</li>
+    <li>Two</li>
+    <li>Three</li>
+</ul>`
+        )
+    })
+
+
+    test('markdown - inputing-45', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`<https://www.markdownguide.org>`
+        )
+
+        expect(html).toEqual(
+`<p><a href="https://www.markdownguide.org">https://www.markdownguide.org</a></p>`
+        )
+    })
+
+    test('markdown - inputing-46', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`<fake@example.com>`
+        )
+
+        expect(html).toEqual(
+`<p><a href="mailto:fake@example.com">fake@example.com</a></p>`
+        )
+    })
+
+    test('markdown - inputing-47', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`~~The.~~ We`
+        )
+
+        expect(html).toEqual(
+`<p><span class=\"strikethroughText\">The.</span> We</p>`
+        )
+    })
+
+    test('markdown - inputing-48', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`~The.~ We`
+        )
+
+        expect(html).toEqual(
+`<p><span class=\"subscriptText\">The.</span> We</p>`
+        )
+    })
+
+    test('markdown - inputing-49', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`^The.^ We`
+        )
+
+        expect(html).toEqual(
+`<p><span class=\"superscriptText\">The.</span> We</p>`
+        )
+    })
+
+    test('markdown - inputing-50', () => {
+        var html : string = markdownToHtmlConverter.toHtml(
+`==The.== We`
+        )
+
+        expect(html).toEqual(
+`<p><span class=\"highlightText\">The.</span> We</p>`
+        )
+    })
+
 })
 

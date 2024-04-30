@@ -29,6 +29,37 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
         return lines
     }
 
+    /** */
+    @syntax.GrammarProductionFunction(`WholeMarkdownLine -> BeginStarItalicText enter`)
+    WholeMarkdownLine__BeginStarItalicText_enter(argv : Array<syntax.AnalysisToken>) {
+        if (argv[0].value.isFirstElementSpaces()) {
+            argv[0].value.removeFirstSpaces()
+            var unorderedItem : UnorderedItem = new UnorderedItem('*', argv[0].value.children[0])
+            var lines : MarkdownLines = new MarkdownLines()
+            lines.addChild(unorderedItem)
+            return lines    
+        } else {
+            var lines : MarkdownLines = new MarkdownLines()
+            lines.addChild(new MarkdownError(argv[0].value.getOriginalContent()))
+            return lines
+        }
+    }
+    @syntax.GrammarProductionFunction(`WholeMarkdownLine -> WholeMarkdownLine BeginStarItalicText enter`)
+    WholeMarkdownLine__WholeMarkdownLine_BeginStarItalicText_enter(argv : Array<syntax.AnalysisToken>) {
+        if (argv[1].value.isFirstElementSpaces()) {
+            argv[1].value.removeFirstSpaces()
+            var unorderedItem : UnorderedItem = new UnorderedItem('*', argv[1].value.children[0])
+            var lines : MarkdownLines = argv[0].value
+            lines.addChild(unorderedItem)
+            return lines
+        } else {
+            var lines : MarkdownLines = new MarkdownLines()
+            lines.addChild(new MarkdownError(argv[1].value.getOriginalContent()))
+            return lines
+        }
+    }
+    /** */
+
     @syntax.GrammarProductionFunction(`WholeMarkdownLine -> <ERROR> enter`)
     WholeMarkdownLine__ERROR_enter(argv : Array<syntax.AnalysisToken>) {
         var lines : MarkdownLines = new MarkdownLines()
@@ -710,6 +741,7 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
     @syntax.GrammarProductionFunction(`BeginStrikethroughText -> BeginStrikethroughText NO_StrikethroughText_Match_emphasis`)
     BeginStrikethroughText__BeginStrikethroughText_NO_StrikethroughText_Match_emphasis(argv : Array<syntax.AnalysisToken>) {
         var strikethroughText : StrikethroughText = argv[0].value
+        
         strikethroughText.addChild(argv[1].value)
         return strikethroughText
     }

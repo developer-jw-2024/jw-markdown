@@ -4,6 +4,9 @@ Markdown -> WholeMarkdownLine
 WholeMarkdownLine -> MarkdownLine enter
 WholeMarkdownLine -> WholeMarkdownLine MarkdownLine enter
 
+WholeMarkdownLine -> BeginStarItalicText enter
+WholeMarkdownLine -> WholeMarkdownLine BeginStarItalicText enter
+
 WholeMarkdownLine -> <ERROR> enter
 WholeMarkdownLine -> WholeMarkdownLine <ERROR> enter
 

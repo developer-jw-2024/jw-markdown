@@ -149,6 +149,7 @@ export class MarkdownValueElement extends MarkdownElement {
     constructor(value : any) {
         super()
         this.value = value
+        this.setOriginalContent(this.value)
     }
 
     getRawValue(): string {
@@ -827,7 +828,34 @@ export class ItalicText extends MarkdownElement {
     }
     
 }
-export class StarItalicText extends ItalicText {}
+export class StarItalicText extends ItalicText {
+    isFirstElementSpaces() {
+        var parent = this
+        var lastLeftChild = this.children[0]
+        while (lastLeftChild.children.length>0) {
+            parent = lastLeftChild
+            lastLeftChild = parent.children[0]
+        }
+
+        return lastLeftChild.constructor==Spaces
+    }
+    removeFirstSpaces() {
+        var parent = this
+        var lastLeftChild = this.children[0]
+        while (lastLeftChild.children.length>0) {
+            parent = lastLeftChild
+            lastLeftChild = parent.children[0]
+        }
+
+        if (lastLeftChild.constructor==Spaces) {
+            lastLeftChild.value = lastLeftChild.value.substring(1)
+            lastLeftChild.originalContent = lastLeftChild.value
+            // parent.markdownElements = parent.markdownElements.slice(1)
+            // parent.children = parent.children.slice(1)
+            
+        }
+    }
+}
 export class UnderlineItalicText extends ItalicText {}
 export class BoldItalicText extends MarkdownElement {
     addChild(child : any) {
@@ -846,10 +874,50 @@ export class BoldItalicText extends MarkdownElement {
 }
 export class StarBoldItalicText extends BoldItalicText {}
 export class UnderlineBoldItalicText extends BoldItalicText {}
-export class StrikethroughText extends MarkdownElement {}
-export class HighlightText extends MarkdownElement {}
-export class SubscriptText extends MarkdownElement {}
-export class SuperscriptText extends MarkdownElement {}
+export class StrikethroughText extends MarkdownElement {
+    addChild(child : any) {
+        this.children.push(child)
+        this.markdownElements.push(child)
+    }
+    toHtml(): html.HtmlElement {
+        var e2 : html.StrikethroughText = new html.StrikethroughText()
+        e2.setChildren(this.toChildrenMarkdownElementsHtml())
+        return e2
+    }
+}
+export class HighlightText extends MarkdownElement {
+    addChild(child : any) {
+        this.children.push(child)
+        this.markdownElements.push(child)
+    }
+    toHtml(): html.HtmlElement {
+        var e2 : html.StrikethroughText = new html.HighlightText()
+        e2.setChildren(this.toChildrenMarkdownElementsHtml())
+        return e2
+    }
+}
+export class SubscriptText extends MarkdownElement {
+    addChild(child : any) {
+        this.children.push(child)
+        this.markdownElements.push(child)
+    }
+    toHtml(): html.HtmlElement {
+        var e2 : html.StrikethroughText = new html.SubscriptText()
+        e2.setChildren(this.toChildrenMarkdownElementsHtml())
+        return e2
+    }
+}
+export class SuperscriptText extends MarkdownElement {
+    addChild(child : any) {
+        this.children.push(child)
+        this.markdownElements.push(child)
+    }
+    toHtml(): html.HtmlElement {
+        var e2 : html.StrikethroughText = new html.SuperscriptText()
+        e2.setChildren(this.toChildrenMarkdownElementsHtml())
+        return e2
+    }
+}
 export class DoubleBacktickText extends MarkdownElement {
     addChild(child : any) {
         this.children.push(child)
@@ -1009,8 +1077,26 @@ export class Footnote extends MarkdownElement {
         return e
     }
 }
-export class URLAddress extends MarkdownValueElement {}
-export class EmailAddress extends MarkdownValueElement {}
+export class URLAddress extends MarkdownValueElement {
+    toHtml(): html.HtmlElement {
+        var value = this.value.substring(1, this.value.length-1)
+        if (value.indexOf('@')>0) {
+            value = `mailto:${value}`
+        }
+        var alt : html.Text = new html.Text(value)
+        var e : html.Link = new html.Link(alt, value, null)
+        return e
+    }
+}
+export class EmailAddress extends MarkdownValueElement {
+    toHtml(): html.HtmlElement {
+        var mail = this.value.substring(1, this.value.length-1)
+        var href = `mailto:${mail}`
+        var alt : html.Text = new html.Text(mail)
+        var e : html.Link = new html.Link(alt, href, null)
+        return e
+    }
+}
 export class Emoji extends MarkdownValueElement {}
 
 export class FootnoteReference extends MarkdownValueElement {

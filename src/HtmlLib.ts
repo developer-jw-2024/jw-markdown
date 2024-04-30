@@ -238,6 +238,42 @@ export class BoldText extends HtmlElement {
 }
 
 
+export class StrikethroughText extends HtmlElement {
+    toHtmlString(intent : string=''): string {
+        var beginTag : string = intent + this.buildBeginHtmlString('span', ['class', 'strikethroughText'])
+        var endTag : string = this.buildEndHtmlString('span')
+        var innerHtml : string = this.buildChildrenHtmlString('', '')
+        return [beginTag, innerHtml, endTag].join('')
+    }
+}
+
+export class HighlightText extends HtmlElement {
+    toHtmlString(intent : string=''): string {
+        var beginTag : string = intent + this.buildBeginHtmlString('span', ['class', 'highlightText'])
+        var endTag : string = this.buildEndHtmlString('span')
+        var innerHtml : string = this.buildChildrenHtmlString('', '')
+        return [beginTag, innerHtml, endTag].join('')
+    }
+}
+
+export class SubscriptText extends HtmlElement {
+    toHtmlString(intent : string=''): string {
+        var beginTag : string = intent + this.buildBeginHtmlString('span', ['class', 'subscriptText'])
+        var endTag : string = this.buildEndHtmlString('span')
+        var innerHtml : string = this.buildChildrenHtmlString('', '')
+        return [beginTag, innerHtml, endTag].join('')
+    }
+}
+
+export class SuperscriptText extends HtmlElement {
+    toHtmlString(intent : string=''): string {
+        var beginTag : string = intent + this.buildBeginHtmlString('span', ['class', 'superscriptText'])
+        var endTag : string = this.buildEndHtmlString('span')
+        var innerHtml : string = this.buildChildrenHtmlString('', '')
+        return [beginTag, innerHtml, endTag].join('')
+    }
+}
+
 export class Image extends HtmlElement {
     alt : string | null
     url : string

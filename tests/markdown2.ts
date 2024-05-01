@@ -11,7 +11,7 @@ var languageDefinition = FileUtils.readFromFileSystem(languageDefinitionPath)
 var tokenTypeDefinition = FileUtils.readFromFileSystem(tokenTypeDefinitionPath)
 var markdownSyntaxAnalyzer : MarkdownSyntaxAnalyzer = new MarkdownSyntaxAnalyzer().initWithDefinition(languageDefinition, tokenTypeDefinition)
 
-var markdownContent = `* Two`
-var markdown : Markdown = markdownSyntaxAnalyzer.toMarkddown(markdownContent)
+var markdownContent = `- Two $a$`
+var markdown : Markdown = markdownSyntaxAnalyzer.toMarkddown(markdownContent, true)
 var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
 console.log(htmlElement.toHtmlString())

@@ -23,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "html-entities": "^2.5.2",
+    "mathjax-full": "^3.2.2",
     "ts-parser-generator": "^0.0.19"
   },
   "devDependencies": {

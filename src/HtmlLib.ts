@@ -1,5 +1,20 @@
 import {encode} from 'html-entities'
 import { utils } from "ts-parser-generator"
+const { mathjax } = require('mathjax-full/js/mathjax.js');
+const { TeX } = require('mathjax-full/js/input/tex.js');
+const { SVG } = require('mathjax-full/js/output/svg.js');
+const { liteAdaptor } = require('mathjax-full/js/adaptors/liteAdaptor.js');
+const { RegisterHTMLHandler } = require('mathjax-full/js/handlers/html.js');
+const { AllPackages } = require('mathjax-full/js/input/tex/AllPackages.js');
+
+
+// Set up MathJax
+const adaptor = liteAdaptor();
+RegisterHTMLHandler(adaptor);
+const tex = new TeX({ packages: AllPackages });
+const svg = new SVG({ fontCache: 'none' });
+const mathjaxDocument = mathjax.document('', { InputJax: tex, OutputJax: svg });
+
 
 export class HtmlElement {
     children : Array<HtmlElement> = []
@@ -151,6 +166,23 @@ export class FencedCodeBlockText extends HtmlStringElement {
         var language = lines[0].trim().substring(3)
         var content = lines.slice(1, lines.length-1).join('\n')
         return `${intent}<pre><code class="${language}">\n${content}\n${intent}</code></pre>`
+    }
+}
+export class DollarSignText extends HtmlStringElement {
+    toHtmlString(intent : string = ''): string {
+        const equation = this.value
+        const node = mathjaxDocument.convert(equation, { display: true });
+        const svgOutput = adaptor.outerHTML(node);
+        return svgOutput
+    }
+
+}
+export class DoubleDollarSignText extends HtmlStringElement {
+    toHtmlString(intent : string = ''): string {
+        const equation = this.value
+        const node = mathjaxDocument.convert(equation, { display: true });
+        const svgOutput = adaptor.outerHTML(node);
+        return "<div>"+svgOutput+"</div>"
     }
 }
 export class HorizontalRule extends HtmlStringElement {

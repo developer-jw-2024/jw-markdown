@@ -1,5 +1,5 @@
 import { syntax } from "ts-parser-generator"
-import { BacktickText, BlankLine, BlockquoteLine, BoldText, Complement, Cursor, DashesRule, DefinitionItemValue, DoubleBacktickText, EmailAddress, Emoji, EqualsRule, FencedCodeBlockText, Footnote, FootnoteReference, Heading, HighlightText, HorizontalRule, Image, ItalicText, Link, Markdown, MarkdownError, MarkdownLines, OrderedItem, PlainText, Sentence, SimpleText, Spaces, StarBoldItalicText, StarBoldText, StarItalicText, StrikethroughText, SubscriptText, SuperscriptText, TableAlignmentRow, TableCell, TableCenterAlignment, TableColumnAlignment, TableLeftAlignment, TableNoAlignment, TableRightAlignment, TableRow, TaskListItem, URLAddress, UnderlineBoldItalicText, UnderlineBoldText, UnderlineItalicText, UnorderedItem } from "./MarkdownLib";
+import { BacktickText, BlankLine, BlockquoteLine, BoldText, Complement, Cursor, DashesRule, DefinitionItemValue, DollarSignText, DoubleBacktickText, DoubleDollarSignText, EmailAddress, Emoji, EqualsRule, FencedCodeBlockText, Footnote, FootnoteReference, Heading, HighlightText, HorizontalRule, Image, ItalicText, Link, Markdown, MarkdownError, MarkdownLines, OrderedItem, PlainText, Sentence, SimpleText, Spaces, StarBoldItalicText, StarBoldText, StarItalicText, StrikethroughText, SubscriptText, SuperscriptText, TableAlignmentRow, TableCell, TableCenterAlignment, TableColumnAlignment, TableLeftAlignment, TableNoAlignment, TableRightAlignment, TableRow, TaskListItem, URLAddress, UnderlineBoldItalicText, UnderlineBoldText, UnderlineItalicText, UnorderedItem } from "./MarkdownLib";
 // import { MarkdownSyntaxAnalyzer } from "./MarkdownSyntaxAnalyzer";
 
 export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEntity {
@@ -102,6 +102,11 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
     @syntax.GrammarProductionFunction(`MarkdownLine -> fencedCodeBlockTag`)
     MarkdownLine__fencedCodeBlockTag(argv : Array<syntax.AnalysisToken>) {
         return new FencedCodeBlockText(argv[0].value)
+    }
+
+    @syntax.GrammarProductionFunction(`MarkdownLine -> doubleDollarSign`)
+    MarkdownLine__doubleDollarSign(argv : Array<syntax.AnalysisToken>) {
+        return new DoubleDollarSignText(argv[0].value)
     }
 
     @syntax.GrammarProductionFunction(`TableRow -> verticalBar`)
@@ -499,6 +504,13 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
         return plainText
     }
 
+    @syntax.GrammarProductionFunction(`PlainText -> dollarSignTag`)
+    PlainText__dollarSignTag(argv : Array<syntax.AnalysisToken>) {
+        var plainText : PlainText = new PlainText()
+        plainText.addChild(new DollarSignText(argv[0].value))
+        return plainText
+    }
+
     @syntax.GrammarProductionFunction(`PlainText -> PlainText simpleText`)
     PlainText__PlainText_simpleText(argv : Array<syntax.AnalysisToken>) {
         var plainText : PlainText = argv[0].value
@@ -588,6 +600,13 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
         var plainText : PlainText = argv[0].value
         plainText.addChild(new SimpleText(argv[1].value))
         return plainText
+    }
+
+    @syntax.GrammarProductionFunction(`PlainText -> PlainText dollarSignTag`)
+    PlainText__PlainText_dollarSignTag(argv : Array<syntax.AnalysisToken>) {
+        var plainText : PlainText = argv[0].value
+        var dollarSignText : DollarSignText = new DollarSignText(argv[1].value)
+        return dollarSignText
     }
 
     @syntax.GrammarProductionFunction(`FootnoteReference -> openSquareBracketWithCaret simpleText closeSquareBracket`)

@@ -32,7 +32,7 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
     /** */
     @syntax.GrammarProductionFunction(`WholeMarkdownLine -> BeginStarItalicText enter`)
     WholeMarkdownLine__BeginStarItalicText_enter(argv : Array<syntax.AnalysisToken>) {
-        // console.log(argv[0].value)
+        // console.log(argv[0].value.isFirstElementSpaces())
         if (argv[0].value.isFirstElementSpaces()) {
             argv[0].value.removeFirstSpaces()
             var sentence : Sentence = new Sentence()
@@ -606,7 +606,8 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
     PlainText__PlainText_dollarSignTag(argv : Array<syntax.AnalysisToken>) {
         var plainText : PlainText = argv[0].value
         var dollarSignText : DollarSignText = new DollarSignText(argv[1].value)
-        return dollarSignText
+        plainText.addChild(dollarSignText)
+        return plainText
     }
 
     @syntax.GrammarProductionFunction(`FootnoteReference -> openSquareBracketWithCaret simpleText closeSquareBracket`)

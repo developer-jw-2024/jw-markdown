@@ -59,8 +59,8 @@ subscriptTag "~"
 superscriptTag "^"
 doubleBacktickTag "``"
 backtickTag "`"
-dollarSignTag "$"[^$]*"$"
-doubleDollarSign "$$"[^$]*"$$"
+dollarSignTag "$"[^$]*"$" None
+doubleDollarSign "$$"[^$]*"$$" None
 fencedCodeBlockTag ("```"[^\n]*\n[^\`]*"```")|("```"[^\n]*\n[^\`]+\n[^\`]*"```")
 
 

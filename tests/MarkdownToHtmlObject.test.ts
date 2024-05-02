@@ -4042,6 +4042,24 @@ Second Term
         ])
         expect(htmlElement).toEqual(rootElement)
     })
+
+    test('markdown - inputing-37', () => {
+        var markdown : Markdown = markdownSyntaxAnalyzer.toMarkddown(
+`$\\sqrt{3}$`
+        )
+
+        var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
+        var rootElement : html.HtmlElement = new html.HtmlRoot().initChildren([
+            new html.Paragraph().initChildren([
+                new html.Sentence().initChildren([
+                    new html.PlainText().initChildren([
+                        new html.DollarSignText("\\sqrt{3}")
+                    ])
+                ])
+            ])
+        ])
+        expect(htmlElement).toEqual(rootElement)
+    })
 })
 
 

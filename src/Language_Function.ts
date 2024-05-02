@@ -104,10 +104,10 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
         return new FencedCodeBlockText(argv[0].value)
     }
 
-    @syntax.GrammarProductionFunction(`MarkdownLine -> doubleDollarSign`)
-    MarkdownLine__doubleDollarSign(argv : Array<syntax.AnalysisToken>) {
-        return new DoubleDollarSignText(argv[0].value.substring(2, argv[0].value.length-2))
-    }
+    // @syntax.GrammarProductionFunction(`MarkdownLine -> doubleDollarSign`)
+    // MarkdownLine__doubleDollarSign(argv : Array<syntax.AnalysisToken>) {
+    //     return new DoubleDollarSignText(argv[0].value.substring(2, argv[0].value.length-2))
+    // }
 
     @syntax.GrammarProductionFunction(`TableRow -> verticalBar`)
     TableRow__verticalBar(argv : Array<syntax.AnalysisToken>) {
@@ -511,6 +511,13 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
         return plainText
     }
 
+    @syntax.GrammarProductionFunction(`PlainText -> doubleDollarSign`)
+    PlainText__doubleDollarSign(argv : Array<syntax.AnalysisToken>) {
+        var plainText : PlainText = new PlainText()
+        plainText.addChild(new DoubleDollarSignText(argv[0].value.substring(2, argv[0].value.length-2)))
+        return plainText
+    }
+
     @syntax.GrammarProductionFunction(`PlainText -> PlainText simpleText`)
     PlainText__PlainText_simpleText(argv : Array<syntax.AnalysisToken>) {
         var plainText : PlainText = argv[0].value
@@ -606,6 +613,14 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
     PlainText__PlainText_dollarSignTag(argv : Array<syntax.AnalysisToken>) {
         var plainText : PlainText = argv[0].value
         var dollarSignText : DollarSignText = new DollarSignText(argv[1].value.substring(1, argv[1].value.length-1))
+        plainText.addChild(dollarSignText)
+        return plainText
+    }
+
+    @syntax.GrammarProductionFunction(`PlainText -> PlainText doubleDollarSign`)
+    PlainText__PlainText_doubleDollarSign(argv : Array<syntax.AnalysisToken>) {
+        var plainText : PlainText = argv[0].value
+        var dollarSignText : DoubleDollarSignText = new DoubleDollarSignText(argv[1].value.substring(2, argv[1].value.length-2))
         plainText.addChild(dollarSignText)
         return plainText
     }

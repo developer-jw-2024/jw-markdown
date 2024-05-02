@@ -175,6 +175,7 @@ export class DollarSignText extends HtmlStringElement {
         
         const svgOutput = adaptor.outerHTML(node);
         return svgOutput
+        // return equation
     }
 
 }
@@ -184,6 +185,7 @@ export class DoubleDollarSignText extends HtmlStringElement {
         const node = mathjaxDocument.convert(equation, { display: true });
         const svgOutput = adaptor.outerHTML(node);
         return "<div>"+svgOutput+"</div>"
+        // return equation
     }
 }
 export class HorizontalRule extends HtmlStringElement {

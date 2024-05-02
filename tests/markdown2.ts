@@ -17,4 +17,6 @@ var markdown : Markdown = markdownSyntaxAnalyzer.toMarkddown(markdownContent, tr
 var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
 var htmlContent = htmlElement.toHtmlString()
 FileUtils.writeToFileSystem('./test.html', htmlContent)
-console.log(htmlContent)
+console.log(
+    `<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" integrity="sha384-wcIxkf4k558AjM3Yz3BBFQUbk/zgIYC2R0QpeeYb+TwlBVMrlgLqwRjRtGZiK7ww" crossorigin="anonymous">`+
+    htmlContent)

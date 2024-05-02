@@ -1,12 +1,5 @@
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __require = /* @__PURE__ */ ((x) => typeof require !== "undefined" ? require : typeof Proxy !== "undefined" ? new Proxy(x, {
-  get: (a, b) => (typeof require !== "undefined" ? require : a)[b]
-}) : x)(function(x) {
-  if (typeof require !== "undefined")
-    return require.apply(this, arguments);
-  throw Error('Dynamic require of "' + x + '" is not supported');
-});
 var __decorateClass = (decorators, target, key, kind) => {
   var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc(target, key) : target;
   for (var i = decorators.length - 1, decorator; i >= 0; i--)
@@ -29,12 +22,12 @@ import { syntax, utils as utils2 } from "ts-parser-generator";
 // src/HtmlLib.ts
 import { encode } from "html-entities";
 import { utils } from "ts-parser-generator";
-var { mathjax } = __require("mathjax-full/js/mathjax.js");
-var { TeX } = __require("mathjax-full/js/input/tex.js");
-var { SVG } = __require("mathjax-full/js/output/svg.js");
-var { liteAdaptor } = __require("mathjax-full/js/adaptors/liteAdaptor.js");
-var { RegisterHTMLHandler } = __require("mathjax-full/js/handlers/html.js");
-var { AllPackages } = __require("mathjax-full/js/input/tex/AllPackages.js");
+import { mathjax } from "mathjax-full/js/mathjax.js";
+import { TeX } from "mathjax-full/js/input/tex.js";
+import { SVG } from "mathjax-full/js/output/svg";
+import { liteAdaptor } from "mathjax-full/js/adaptors/liteAdaptor.js";
+import { RegisterHTMLHandler } from "mathjax-full/js/handlers/html.js";
+import { AllPackages } from "mathjax-full/js/input/tex/AllPackages.js";
 var adaptor = liteAdaptor();
 RegisterHTMLHandler(adaptor);
 var tex = new TeX({ packages: AllPackages });
@@ -188,7 +181,7 @@ var DoubleDollarSignText = class extends HtmlStringElement {
     const equation = this.value;
     const node = mathjaxDocument.convert(equation, { display: true });
     const svgOutput = adaptor.outerHTML(node);
-    return "<div>" + svgOutput + "</div>";
+    return intent + "<div>" + svgOutput + "</div>";
   }
 };
 var HorizontalRule = class extends HtmlStringElement {

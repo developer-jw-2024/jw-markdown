@@ -44,17 +44,17 @@ var import_ts_parser_generator2 = require("ts-parser-generator");
 // src/HtmlLib.ts
 var import_html_entities = require("html-entities");
 var import_ts_parser_generator = require("ts-parser-generator");
-var { mathjax } = require("mathjax-full/js/mathjax.js");
-var { TeX } = require("mathjax-full/js/input/tex.js");
-var { SVG } = require("mathjax-full/js/output/svg.js");
-var { liteAdaptor } = require("mathjax-full/js/adaptors/liteAdaptor.js");
-var { RegisterHTMLHandler } = require("mathjax-full/js/handlers/html.js");
-var { AllPackages } = require("mathjax-full/js/input/tex/AllPackages.js");
-var adaptor = liteAdaptor();
-RegisterHTMLHandler(adaptor);
-var tex = new TeX({ packages: AllPackages });
-var svg = new SVG({ fontCache: "none" });
-var mathjaxDocument = mathjax.document("", { InputJax: tex, OutputJax: svg });
+var import_mathjax = require("mathjax-full/js/mathjax.js");
+var import_tex = require("mathjax-full/js/input/tex.js");
+var import_svg = require("mathjax-full/js/output/svg");
+var import_liteAdaptor = require("mathjax-full/js/adaptors/liteAdaptor.js");
+var import_html = require("mathjax-full/js/handlers/html.js");
+var import_AllPackages = require("mathjax-full/js/input/tex/AllPackages.js");
+var adaptor = (0, import_liteAdaptor.liteAdaptor)();
+(0, import_html.RegisterHTMLHandler)(adaptor);
+var tex = new import_tex.TeX({ packages: import_AllPackages.AllPackages });
+var svg = new import_svg.SVG({ fontCache: "none" });
+var mathjaxDocument = import_mathjax.mathjax.document("", { InputJax: tex, OutputJax: svg });
 var HtmlElement = class {
   constructor() {
     this.children = [];
@@ -203,7 +203,7 @@ var DoubleDollarSignText = class extends HtmlStringElement {
     const equation = this.value;
     const node = mathjaxDocument.convert(equation, { display: true });
     const svgOutput = adaptor.outerHTML(node);
-    return "<div>" + svgOutput + "</div>";
+    return intent + "<div>" + svgOutput + "</div>";
   }
 };
 var HorizontalRule = class extends HtmlStringElement {

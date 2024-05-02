@@ -11,8 +11,10 @@ var languageDefinition = FileUtils.readFromFileSystem(languageDefinitionPath)
 var tokenTypeDefinition = FileUtils.readFromFileSystem(tokenTypeDefinitionPath)
 var markdownSyntaxAnalyzer : MarkdownSyntaxAnalyzer = new MarkdownSyntaxAnalyzer().initWithDefinition(languageDefinition, tokenTypeDefinition)
 
-var markdownContent = `* Two $a$`
+var markdownContent = FileUtils.readFromFileSystem(`${__dirname}/markdown2.txt`)
 var markdown : Markdown = markdownSyntaxAnalyzer.toMarkddown(markdownContent)
-
+console.log(markdown.toMarkdownHierarchy())
 var htmlElement : html.HtmlElement = markdown.toHtml() as html.HtmlElement
-console.log(htmlElement.toHtmlString())
+var html = htmlElement.toHtmlString()
+FileUtils.writeToFileSystem('./test.html', html)
+console.log(html)

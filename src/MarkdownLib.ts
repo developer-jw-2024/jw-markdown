@@ -269,6 +269,8 @@ export class Markdown extends MarkdownElement {
             this.addTaskListItem(element as TaskListItem)
         } else if (element.getClass()==Footnote) {
             this.addFootnote(element as Footnote)
+        } else if (element.getClass()==DoubleDollarSignText) {
+            this.addDoubleDollarSignText(element as DoubleDollarSignText)
         } else{
             throw new Error(`Can not add ${element.getClass().name} to ${this.getClass().name}`)
         }
@@ -484,6 +486,10 @@ export class Markdown extends MarkdownElement {
     }
 
     addFootnote(element : Footnote) {
+        this.getMarkdownElements().push(element)
+    }
+
+    addDoubleDollarSignText(element : DoubleDollarSignText) {
         this.getMarkdownElements().push(element)
     }
 

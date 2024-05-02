@@ -172,6 +172,7 @@ export class DollarSignText extends HtmlStringElement {
     toHtmlString(intent : string = ''): string {
         const equation = this.value
         const node = mathjaxDocument.convert(equation, { display: true });
+        
         const svgOutput = adaptor.outerHTML(node);
         return svgOutput
     }

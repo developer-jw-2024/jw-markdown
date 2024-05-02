@@ -106,7 +106,7 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
 
     @syntax.GrammarProductionFunction(`MarkdownLine -> doubleDollarSign`)
     MarkdownLine__doubleDollarSign(argv : Array<syntax.AnalysisToken>) {
-        return new DoubleDollarSignText(argv[0].value)
+        return new DoubleDollarSignText(argv[0].value.substring(2, argv[0].value.length-2))
     }
 
     @syntax.GrammarProductionFunction(`TableRow -> verticalBar`)
@@ -507,7 +507,7 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
     @syntax.GrammarProductionFunction(`PlainText -> dollarSignTag`)
     PlainText__dollarSignTag(argv : Array<syntax.AnalysisToken>) {
         var plainText : PlainText = new PlainText()
-        plainText.addChild(new DollarSignText(argv[0].value))
+        plainText.addChild(new DollarSignText(argv[0].value.substring(1, argv[0].value.length-1)))
         return plainText
     }
 
@@ -605,7 +605,7 @@ export class MarkdownLanguageFunctionsEntity extends syntax.LanguageFunctionsEnt
     @syntax.GrammarProductionFunction(`PlainText -> PlainText dollarSignTag`)
     PlainText__PlainText_dollarSignTag(argv : Array<syntax.AnalysisToken>) {
         var plainText : PlainText = argv[0].value
-        var dollarSignText : DollarSignText = new DollarSignText(argv[1].value)
+        var dollarSignText : DollarSignText = new DollarSignText(argv[1].value.substring(1, argv[1].value.length-1))
         plainText.addChild(dollarSignText)
         return plainText
     }

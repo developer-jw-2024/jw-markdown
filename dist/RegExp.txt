@@ -34,7 +34,7 @@ columnRightAlignment [\t ]*"-"{3,}:[\t ]*
 columnCenterAlignment [\t ]*:"-"{3,}:[\t ]*
 
 
-blockquoteBiggerSignLine (>+|>+▮|▮>+|>+▮>+)" "[^\n]*
+blockquoteBiggerSignLine (>+|>+▮|▮>+|>+▮>+)" "[^\n]* None
 leftArrow >+
 
 headingSharpSign #+" "
@@ -61,6 +61,6 @@ doubleBacktickTag "``"
 backtickTag "`"
 dollarSignTag "$"[^$]*"$" None
 doubleDollarSign "$$"[^$]*"$$" None
-fencedCodeBlockTag ("```"[^\n]*\n[^\`]*"```")|("```"[^\n]*\n[^\`]+\n[^\`]*"```")
+fencedCodeBlockTag ("```"[^\n]*\n[^\`]*"```")|("```"[^\n]*\n[^\`]+\n[^\`]*"```") None
 
 
